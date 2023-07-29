@@ -118,10 +118,8 @@ def cart(request, total=0, quantity=0, cart_items=None,count=0,coupons=None, car
         'quantity' : quantity,
         'cart_items' : cart_items,
         'count': count,
-        'coupons': coupons,
         'cart':cart,
-        'discount_amount':discount_amount,
         'sub_total':subtotal,
     }
 
-    return render(request, "homeapp/cart.html", context)
+    return render(request, "cart.html", context)

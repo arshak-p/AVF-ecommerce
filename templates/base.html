@@ -74,7 +74,6 @@
                 <ul>
                     <li class="{% if current_page == 'index' %}active{% endif %}"><a href="{% url 'index' %}">Home</a></li>
                     <li class="{% if current_page == 'shop' %}active{% endif %}"><a href="{% url 'shop'%}">Shop</a></li>
-                    <li><a href="checkout.html">Checkout</a></li>
                     <li class="{% if current_page == 'account' %}active{% endif %}"><a href="account.html">Account</a></li>
                     {% if user.is_authenticated and user.is_superuser %}
                     <li><a href="{% url 'adminpanel'%}">Admin</a></li>
