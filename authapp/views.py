@@ -8,8 +8,8 @@ from .models import Profile
 import random
 from django.core.mail import send_mail
 from django.conf import settings
-# from cart.views import _session_id
-# from cart.models import *
+from cart.views import _session_id
+from cart.models import *
 # Create your views here.
 def signup(request):
     if request.method=="POST":

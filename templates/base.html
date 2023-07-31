@@ -19,7 +19,8 @@
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="/static/assets/css/core-style.css">
     <link rel="stylesheet" href="/static/assets/style.css">
-
+    {% block CSS %}
+    {% endblock CSS %}
    
 </head>
 
@@ -93,7 +94,7 @@
             </div>
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
-                <a href="{% url 'cart'%}" class="cart-nav"><img src="/static/assets/img/core-img/cart.png" alt=""> Cart <span>(0)</span></a>
+                <a href="{% url 'cart'%}" class="cart-nav"><img src="/static/assets/img/core-img/cart.png" alt=""> Cart <span>({{count}})</span></a>
                 <a href="#" class="fav-nav"><img src="/static/assets/img/core-img/favorites.png" alt=""> Favourite</a>
                 <a href="#" class="search-nav"><img src="/static/assets/img/core-img/search.png" alt=""> Search</a>
             </div>
@@ -183,6 +184,7 @@
     <!-- ##### Footer Area End ##### -->
 
     <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
+    {% block java %}{% endblock java %}
     <script src="/static/assets/js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
     <script src="/static/assets/js/popper.min.js"></script>

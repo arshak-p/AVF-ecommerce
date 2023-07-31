@@ -90,7 +90,7 @@ def delete_cart(request, product_id):
 
 # For showing cart items on cart page 
 
-def cart(request, total=0, quantity=0, cart_items=None,count=0,coupons=None, cart=None, discount_amount=0,subtotal=0):
+def cart(request, total=0, quantity=0, cart_items=None,count=0, cart=None, subtotal=0):
 
     try:
         if request.user.is_authenticated:
@@ -100,16 +100,13 @@ def cart(request, total=0, quantity=0, cart_items=None,count=0,coupons=None, car
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
             
         for cart_item in cart_items:
-            if cart_item.product.offer:
-                total += cart_item.sub_total_with_offer()
-            elif cart_item.product.category.offer:
-                total += cart_item.sub_total_with_offer_category()
-            else:
-                total += cart_item.sub_total()
-
+            total += cart_item.sub_total()
             quantity += cart_item.quantity
-            count += 1
+            count +=1
+
             subtotal = total
+        
+       
     except:
         pass
 

@@ -149,9 +149,16 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
+                            {% if product.stock <= 0 %}
+                            <h7>out of stock</h7>
+                            {% else %}
                             <div class="cart">
+                            
+                           
                                 <a href={% url 'addcart' product.id %} data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="/static/assets/img/core-img/cart.png" alt=""></a>
+                               
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
