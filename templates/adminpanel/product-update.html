@@ -99,8 +99,11 @@
                     <input class="form-control" type="file" multiple name="images" accept="image/*"/>
                   </div>
                   <div class="mb-4">
-                    <label class="form-label">Current product Image</label>
+                    <label class="form-label">Current product Images</label>
+                    {% for image in product.product_images.all %}
                     <img src="{{image.pr_images.url}}" alt="Current Product Image" width="100">
+                    
+                    {% endfor %}
                   </div>
                     <br>
                   <button class="btn btn-md rounded font-sm hover-up" type="submit">

@@ -47,6 +47,7 @@ def cart(request):
     current_page = "cart"
     return render(request,"cart.html",{'current_page':current_page})
 
+
 def product(request):
     current_page = "product"
     product = Product.objects.filter(is_available = True)
