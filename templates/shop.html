@@ -72,7 +72,7 @@
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                 </div>
-                <div class="range-price">$10 - $1000</div>
+                <div class="range-price">$1000 - $10000</div>
             </div>
         </div>
     </div>
@@ -120,14 +120,14 @@
         <div class="row">
 
             <!-- Single Product Area -->
-            {% for product in products%}
+            {% for product in current_page  %}
         
             <div class="col-12 col-sm-6 col-md-12 col-xl-6">
                 <div class="single-product-wrapper">
                     <!-- Product Image -->
                     <div class="product-img">
                         <img src="{{product.images.url}}"> <a href="{% url 'product_details' product.id %}"></a>
-                        <img class="hover-img" src="{{ product.product_images.last.pr_images.url }}" alt="">
+                        <a href="{% url 'product_details' product.id %}"><img class="hover-img" src="{{ product.product_images.last.pr_images.url }}" alt=""></a>
                     </div>
 
                     <!-- Product Description -->
@@ -168,19 +168,32 @@
            
         </div>
 
-        <div class="row">
-            {% comment %} <div class="col-12">
+<!-- Single Product Area -->
+
+
                 <!-- Pagination -->
-                <nav aria-label="navigation">
-                    <ul class="pagination justify-content-end mt-50">
-                        <li class="page-item active"><a class="page-link" href="#">01.</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02.</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03.</a></li>
-                        <li class="page-item"><a class="page-link" href="#">04.</a></li>
-                    </ul>
-                </nav>
-            </div> {% endcomment %}
-            
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="navigation">
+                            <ul class="pagination justify-content-end mt-50">
+                                {% if current_page.has_previous %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ current_page.previous_page_number }}"> < </a></li>
+                                {% endif %}
+                                {% for num in current_page.paginator.page_range %}
+                                    {% if current_page.number == num %}
+                                        <li class="page-item active"><a class="page-link" href="#">{{ num }}.</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}.</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if current_page.has_next %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ current_page.next_page_number }}"> > </a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
         </div>
     </div>
 </div>

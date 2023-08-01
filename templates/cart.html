@@ -45,7 +45,7 @@
                                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                                 </span></a>
                                                 
-                                                <input type="number" class="qty-text" id="qty" step="{{ quantity }}" min="{{ count }}" max="300" name="quantity" value="{{ quantity }}">
+                                                <input type="number" class="qty-text" id="qty" step="{{ cart_item.quantity }}" min="{{ count }}" max="300" name="quantity" value="{{ cart_item.quantity }}">
                                                <a  href="{% url 'addcart' cart_item.product.id %}"> <span class="qty-plus" >
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </span><a>

@@ -2,19 +2,32 @@ from django.shortcuts import render
 from category.models import Brand
 from category.models import Category
 from store.models import Product
-from django.core.paginator import EmptyPage
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 # Create your views here.
 
 def shop(request):
-    current_page = "shop"
+    current_pages = "shop"
     brand = Brand.objects.filter(is_available = True)
     category = Category.objects.filter(is_available= True)
     product = Product.objects.filter(is_available = True)
+    per_page = 4
+
+    page_number = request.GET.get('page')
+    paginator = Paginator(product, per_page)
+    try:
+        current_page = paginator.page(page_number)
+
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
     context = {
         'brand':brand,
         'categorys':category,
         'current_page':current_page,
         'products':product,
+        'current_pages':current_pages,
 
         }
     

@@ -3,26 +3,10 @@ from .models import Product
 from .models import Product, Brand
 from category.models import Category
 from django.db.models import Q
-from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
-def store(request):
-    products = Product.objects.all().filter(is_available = True)
-    per_page = 4
-    page_number = request.GET.get('page')
-    paginator = Paginator(products,per_page)
-    try:
-        current_page = Paginator(products,per_page)
-    except PageNotAnInteger:
-        current_page = paginator.page(1)
-    except EmptyPage:
-        current_page = paginator.page(paginator.num_pages)
-    context = {
-        'current_page':current_page,
-        'products' : products,
-        
-    }
-    return render(request, 'shop.html', context)
+
 
 def product_details(request, id):
     try:
@@ -66,13 +50,26 @@ def filtered_products(request):
     if count == 0:
         filtered_products = None
 
-    
+    per_page = 4
+    page_number = request.GET.get('page')
+    paginator = Paginator(filtered_products, per_page)
 
+    try:
+        current_page = paginator.page(page_number)
+    
+    except PageNotAnInteger:
+        # If the 'page' parameter is not an integer, display the first page
+        current_page = paginator.page(1)
+
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+        
 
     categories = Category.objects.all()
     brand = Brand.objects.all()
 
     context = {
+        "current_page": current_page,
         'products' : filtered_products,
         'categories' : categories,
         'brands' : brand,

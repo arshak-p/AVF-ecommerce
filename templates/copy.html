@@ -238,3 +238,34 @@
 </div>
 <!-- Product Details Area End -->
 </div>
+
+
+
+
+
+
+def store(request):
+    product = Product.objects.all().filter(is_available = True)
+    brand = Brand.objects.filter(is_available = True)
+    category = Category.objects.filter(is_available= True)
+    
+    per_page = 4
+
+    page_number = request.GET.get('page')
+    paginator = Paginator(product, per_page)
+    try:
+        current_page = paginator.page(page_number)
+
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+
+    context = {
+        'current_page': current_page,
+        'brand':brand,
+        'categorys':category,
+        'products':product,
+    }
+    return render(request, 'shop.html', context)
