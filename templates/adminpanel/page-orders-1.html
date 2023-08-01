@@ -1,0 +1,58 @@
+{% extends 'adminpanel/base.html' %}
+{% block content %}
+
+                    <!-- card-header end// -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Product name</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col" class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order_items %}
+                                    <tr>
+                                        <td>{{ item.order.order_id }}</td>
+                                        <td><b>{{ item.order.address.fullname }}</b></td>
+                                        <td>{{ item.product.product_name }}</td>
+                                        <td>{{ item.sub_total }}</td>
+                                        <td><span class="badge rounded-pill alert-warning">{{ item.status }}</span></td>
+                                        <td>{{ item.created_at }}</td>
+                                        <td class="text-end">
+                                            <a href="{% url 'ordermanage' item.id %}" class="btn btn-md rounded font-sm">Detail</a>
+                                            
+                                            <!-- dropdown //end -->
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive //end -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+                <!-- card end// -->
+            </section>
+            <!-- content-main end// -->
+            <footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        &copy; Nest - HTML Ecommerce Template .
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">All rights reserved</div>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
