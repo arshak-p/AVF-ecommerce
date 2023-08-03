@@ -1,12 +1,9 @@
-from django.shortcuts import render
 from django.shortcuts import redirect, render
-# import authentication
 from user_profile.models import UserAddress, UserProfile
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-
 # Create your views here.
 
 @login_required(login_url='handlelogin')
@@ -153,4 +150,9 @@ def edit_address(request, id):
     context = {
         'address' : address,
     }
-    return render(request, "address.html", context)
+    return render(request, "my_acc.html", context)
+
+def dashbord(request):
+    return render(request, "my_acc.html")
+
+

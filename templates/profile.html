@@ -1,3 +1,497 @@
 
-{% extends 'base.html' %}
-{% block title %} AVF-profile {% endblock title %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>AVF-profile</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+     <!-- Favicon  -->
+     <link rel="icon" href="/static/assets/img/core-img/logobw.png">
+
+     <!-- Core Style CSS -->
+     <link rel="stylesheet" href="/static/assets/css/core-style.css">
+     <link rel="stylesheet" href="/static/assets/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/vendor/bootstrap.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/vendor/font.awesome.min.css">
+    <!-- Linear Icons CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/vendor/linearicons.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/plugins/swiper-bundle.min.css">
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/plugins/animate.min.css">
+    <!-- Jquery ui CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/plugins/jquery-ui.min.css">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/plugins/nice-select.min.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="/static/assets2/css/plugins/magnific-popup.css">
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="/static/assets2/css/style.css">
+    <link
+  href="/static/admin_assets/css/main.css?v=1.1"
+  rel="stylesheet"
+  type="text/css"
+    />
+
+</head>
+<body>
+
+        
+    <!-- off-canvas menu start -->
+    
+    <!-- off-canvas menu end -->
+    </header>
+    <!-- Header Area End Here -->
+    <!-- Breadcrumb Area Start Here -->
+    <div class="breadcrumbs-area position-relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="breadcrumb-content position-relative section-content">
+                        <h3 class="title-3">My-Profile</h3>
+                        <ul>
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li>My Account</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content-main">
+        <div class="content-header">
+          <h2 class="content-title">Profile setting</h2>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row gx-5">
+              <div class="col-lg-9">
+                <section class="content-body p-xl-4">
+                  <form method="POST" action="{% url 'editprofile' %}" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      {% if messages%}
+              {% for message in messages%}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong></strong>{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {%endfor%}
+              {%endif%}
+                    <div class="row">
+                      <div class="col-lg-8">
+                        <div class="row gx-3">
+                          <div class="col-6 mb-3">
+                            <label class="form-label">First name</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              value="{{ request.user.first_name }}"
+                              name="fname"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-6 mb-3">
+                            <label class="form-label">Last name</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Type here"
+                              value="{{ request.user.last_name }}"
+                              name="lname"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                              class="form-control"
+                              type="email"
+                              placeholder="example@mail.com"
+                              value="{{ request.user.email }}"
+                              name="email"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-6 mb-3">
+                            <label class="form-label">Phone</label>
+                            <input
+                              class="form-control"
+                              type="tel"
+                              placeholder="Enter your phone number"
+                              name="phone"
+                              value="{{ user_profile.phone_no}}"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-12 mb-3">
+                            <label class="form-label">Address</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Type here"
+                              name="address"
+                              value="{{ user_profile.address }}"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-12 mb-3">
+                            <label class="form-label">City</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Type here"
+                              name="city"
+                              value="{{ user_profile.city}}"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-12 mb-3">
+                            <label class="form-label">State</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Type here"
+                              name="state"
+                              value="{{ user_profile.state}}"
+                            />
+                          </div>
+                          <!-- col .// -->
+                          <div class="col-lg-12 mb-3">
+                            <label class="form-label">Country</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Type here"
+                              name="country"
+                              value="{{ user_profile.country}}"
+                            />
+                          </div>
+                          <!-- col .// -->
+                        </div>
+                        <!-- row.// -->
+                      </div>
+                      <!-- col.// -->
+                      <aside class="col-lg-4 p-5">
+                        <figure class="text-lg-center">
+                          <img
+                            class="img-lg mb-3 img-avatar"
+                            src="{{ user_profile.profile_picture.url }}"
+                            alt="User Photo"
+                            value="{{ user_profile.profile_picture }}"
+                          />
+                          <figcaption>
+                            <input
+                              class="btn btn-light rounded font-md"
+                              type="file"
+                              name="image"
+                            />
+                            <i class="icons material-icons md-backup font-md"></i>
+                          </figcaption>
+                        </figure>
+                      </aside>
+                      <!-- col.// -->
+                    </div>
+                    <!-- row.// -->
+                    <br />
+                    <button class="btn btn-primary" type="submit">
+                      Save changes
+                    </button>
+                  </form>
+                  
+                    <h3 class="mt-3">Manage address</h3>
+                    <br>
+                    <button class="dropdown nav-item btn btn-white" style="border:1px solid black;">
+                      <a
+                        class="dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        href="#"
+                        id="dropdownAccount"
+                        aria-expanded="false"
+                        
+                      >
+                        Select address</a>
+                      <div
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownAccount"
+                      >
+                      {% for address in addresses %}
+                      
+                     
+                        <a class="dropdown-item" href="{% url 'editaddress' address.id %}"
+                          >{{ address.fullname }}, {{ address.city }}, {{ address.pincode}}
+                          </a
+                        >
+                        {% endfor %}
+                      </div>
+                    </button>
+      
+                  <hr class="my-5" />
+                  <div class="row" style="max-width: 920px">
+                    <div class="col-md">
+                      <article class="box mb-3 bg-light">
+                        <a
+                          class="btn float-end btn-light btn-sm rounded font-md"
+                          href="{% url 'changepassword' %}"
+                          >Change</a
+                        >
+                        <h6>Password</h6>
+                        <small class="text-muted d-block" style="width: 70%"
+                          >You can reset or change your password by clicking
+                          here</small
+                        >
+                      </article>
+                    </div>
+                    <!-- col.// -->
+                    <div class="col-md">
+                      <article class="box mb-3 bg-light">
+                        <a
+                          class="btn float-end btn-light rounded btn-sm font-md"
+                          href="#"
+                          >Deactivate</a
+                        >
+                        <h6>Remove account</h6>
+                        <small class="text-muted d-block" style="width: 70%"
+                          >Once you delete your account, there is no going
+                          back.</small
+                        >
+                      </article>
+                    </div>
+                    <!-- col.// -->
+                  </div>
+                  <!-- row.// -->
+                </section>
+                <!-- content-body .// -->
+              </div>
+              <!-- col.// -->
+            </div>
+            <!-- row.// -->
+          </div>
+          <!-- card body end// -->
+        </div>
+        <!-- card end// -->
+      </section>
+    
+</body>
+ <!-- ##### Newsletter Area Start ##### -->
+ <section class="newsletter-area section-padding-100-0">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Newsletter Text -->
+            <div class="col-12 col-lg-6 col-xl-7">
+                <div class="newsletter-text mb-100">
+                    <h2>Subscribe for a <span>25% Discount</span></h2>
+                    <p>Nulla ac convallis lorem, eget euismod nisl. Donec in libero sit amet mi vulputate consectetur. Donec auctor interdum purus, ac finibus massa bibendum nec.</p>
+                </div>
+            </div>
+            <!-- Newsletter Form -->
+            <div class="col-12 col-lg-6 col-xl-5">
+                <div class="newsletter-form mb-100">
+                    <form action="#" method="post">
+                        <input type="email" name="email" class="nl-email" placeholder="Your E-mail">
+                        <input type="submit" value="Subscribe">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ##### Newsletter Area End ##### -->
+
+<!-- ##### Footer Area Start ##### -->
+<footer class="footer_area clearfix">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Single Widget Area -->
+            <div class="col-12 col-lg-4">
+                <div class="single_widget_area">
+                    <!-- Logo -->
+                    <div class="footer-logo mr-50">
+                        <a href="{% url 'index' %}"><img src="/static/assets/img/core-img/logo ft.png" alt=""></a>
+                    </div>
+                    <!-- Copywrite Text -->
+                    {% comment %} <p class="copywrite"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> & Re-distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p> {% endcomment %}
+                </div>
+            </div>
+            <!-- Single Widget Area -->
+            <div class="col-12 col-lg-8">
+                <div class="single_widget_area">
+                    <!-- Footer Menu -->
+                    <div class="footer_menu">
+                        <nav class="navbar navbar-expand-lg justify-content-end">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#footerNavContent" aria-controls="footerNavContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                            <div class="collapse navbar-collapse" id="footerNavContent">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="shop.html">Shop</a>
+                                    </li>
+                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="checkout.html">Checkout</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="checkout.html">Account</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ##### Footer Area End ##### -->   
+
+       
+<script src="static/js/jquery-2.2.3.min.js"></script>
+<!--search jQuery-->
+<script src="static/js/modernizr-2.6.2.min.js"></script>
+<script src="static/js/classie-search.js"></script>
+<script src="static/js/demo1-search.js"></script>
+<!--//search jQuery-->
+<!-- cart-js -->
+<script src="static/js/minicart.js"></script>
+<script>
+  googles.render();
+
+  googles.cart.on("googles_checkout", function (evt) {
+    var items, len, i;
+
+    if (this.subtotal() > 0) {
+      items = this.items();
+
+      for (i = 0, len = items.length; i < len; i++) {}
+    }
+  });
+</script>
+<!-- //cart-js -->
+<script>
+  $(document).ready(function () {
+    $(".button-log a").click(function () {
+      $(".overlay-login").fadeToggle(200);
+      $(this).toggleClass("btn-open").toggleClass("btn-close");
+    });
+  });
+  $(".overlay-close1").on("click", function () {
+    $(".overlay-login").fadeToggle(200);
+    $(".button-log a").toggleClass("btn-open").toggleClass("btn-close");
+    open = false;
+  });
+</script>
+<!-- carousel -->
+<!-- Count-down -->
+<script src="static/js/simplyCountdown.js"></script>
+<link href="static/css/simplyCountdown.css" rel="stylesheet" type="text/css" />
+<script>
+  var d = new Date();
+  simplyCountdown("simply-countdown-custom", {
+    year: d.getFullYear(),
+    month: d.getMonth() + 2,
+    day: 25,
+  });
+</script>
+<!--// Count-down -->
+<script src="static/js/owl.carousel.js"></script>
+<script>
+  $(document).ready(function () {
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      responsiveClass: true,
+      responsive: {
+        0: {
+          items: 1,
+          nav: true,
+        },
+        600: {
+          items: 2,
+          nav: false,
+        },
+        900: {
+          items: 3,
+          nav: false,
+        },
+        1000: {
+          items: 4,
+          nav: true,
+          loop: false,
+          margin: 20,
+        },
+      },
+    });
+  });
+</script>
+
+<!-- //end-smooth-scrolling -->
+
+<!-- dropdown nav -->
+<script>
+  $(document).ready(function () {
+    $(".dropdown").hover(
+      function () {
+        $(".dropdown-menu", this).stop(true, true).slideDown("fast");
+        $(this).toggleClass("open");
+      },
+      function () {
+        $(".dropdown-menu", this).stop(true, true).slideUp("fast");
+        $(this).toggleClass("open");
+      }
+    );
+  });
+</script>
+<!-- //dropdown nav -->
+<script src="static/js/move-top.js"></script>
+<script src="static/js/easing.js"></script>
+<script>
+  jQuery(document).ready(function ($) {
+    $(".scroll").click(function (event) {
+      event.preventDefault();
+      $("html,body").animate(
+        {
+          scrollTop: $(this.hash).offset().top,
+        },
+        900
+      );
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    /*
+                                var defaults = {
+                                      containerID: 'toTop', // fading element id
+                                    containerHoverID: 'toTopHover', // fading element hover id
+                                    scrollSpeed: 1200,
+                                    easingType: 'linear' 
+                                 };
+                                */
+
+    $().UItoTop({
+      easingType: "easeOutQuart",
+    });
+  });
+</script>
+<!--// end-smoth-scrolling -->
+
+<script src="static/js/bootstrap.js"></script>
+<!-- js file -->
+<script src="/static/admin_assets/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/static/admin_assets/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/static/admin_assets/js/vendors/select2.min.js"></script>
+<script src="/static/admin_assets/js/vendors/perfect-scrollbar.js"></script>
+<script src="/static/admin_assets/js/vendors/jquery.fullscreen.min.js"></script>
+<!-- Main Script -->
+<script
+  src="/static/admin_assets/js/main.js?v=1.1"
+  type="text/javascript"
+></script>

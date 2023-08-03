@@ -76,7 +76,7 @@
                     </div>
 
                     <!-- Add to Cart Form -->
-                    <form class="cart clearfix" method="post">
+                    
                         {% csrf_token %}
                         {% comment %} <div class="cart-btn d-flex mb-50">
                             <p>Qty</p>
@@ -95,11 +95,11 @@
                         {% if single_product.stock <= 0 %}
                         <h4>out of stock</h4>
                         {% else %}
-                        <a href={% url 'addcart' single_product.id %}>
-                            <button type="submit" name="addtocart" value="5" class="btn amado-btn">Add to cart</button>
+                        <a href="{% url 'addcart' single_product.id %}">
+                            <button  name="addtocart"  class="btn amado-btn">Add to cart</button>
                         </a>
                         {% endif %}   
-                    </form>
+                
 
                 </div>
             </div>
