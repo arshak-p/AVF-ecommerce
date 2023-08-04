@@ -111,20 +111,20 @@ def place_order(request):
             if cart_item.quantity > cart_item.product.stock:
                 print("cart item out of stock")
                 return redirect('cart')
-            if cart_item.product.offer:
-                total += cart_item.sub_total_with_offer()
-            elif cart_item.product.category.offer:
-                total += cart_item.sub_total_with_offer_category()
-            else:
-                total += cart_item.sub_total()
-        cart = Cart.objects.get(session_id=_session_id(request))
-        if cart.coupon:
-            discount_amount = total * cart.coupon.off_percent / 100
+            # if cart_item.product.offer:
+            #     total += cart_item.sub_total_with_offer()
+            # elif cart_item.product.category.offer:
+            #     total += cart_item.sub_total_with_offer_category()
+        #     else:
+        #         total += cart_item.sub_total()
+        # cart = Cart.objects.get(session_id=_session_id(request))
+        # if cart.coupon:
+        #     discount_amount = total * cart.coupon.off_percent / 100
 
-            if discount_amount > cart.coupon.max_discount:
-                discount_amount = cart.coupon.max_discount
+        #     if discount_amount > cart.coupon.max_discount:
+        #         discount_amount = cart.coupon.max_discount
 
-            total -= discount_amount
+            # total -= discount_amount
         if cart_count <= 0:
             return redirect('store')
 
@@ -138,7 +138,7 @@ def place_order(request):
         data.user = current_user
         data.address = address
         data.order_total = total
-        data.coupon_discount = discount_amount
+        # data.coupon_discount = discount_amount
         data.save()
         order = Order.objects.get(user = current_user, status=data.status, order_id=data.order_id)
         
@@ -151,7 +151,7 @@ def place_order(request):
             # 'payment' : payment,
             'discount_amount': discount_amount,
         }
-        return render(request,'payment.html', context)
+        return render(request,'pyment.html', context)
 
 @login_required(login_url='handlelogin')    
 def my_orders(request):
@@ -189,30 +189,7 @@ def cancel_orders(request, id):
 
 
 # invoice function
+# invoice function
 @login_required(login_url='handlelogin')
-def invoice(request, id):
-    total = 0
-    pretotal = 0
-    # id from user side(my orders)
-    order_item = OrderItem.objects.get(id = id)
-    # for retreving the order
-    order = Order.objects.get(order_id = order_item.order.order_id)
-    # for retreving all ordered items in that order
-    order_items = OrderItem.objects.filter(order = order)
-    for item in order_items:
-        total += item.sub_total()
-    if order.coupon_discount:
-            pretotal=total
-            total -= order.coupon_discount
-    context = {
-        'order':order,
-        'orderitems':order_items,
-        'total' : total,
-        'pretotal':pretotal,
-        'f':True,
-
-    }
-    return render(request, 'invoice.html', context)
-
-def inv(request):
-    return render(request,'invoice.html')
+def invoice(request):
+    return render(request, 'invoice.html')

@@ -150,9 +150,4 @@ def edit_address(request, id):
     context = {
         'address' : address,
     }
-    return render(request, "my_acc.html", context)
-
-def dashbord(request):
-    return render(request, "my_acc.html")
-
-
+    return render(request, "address.html", context)

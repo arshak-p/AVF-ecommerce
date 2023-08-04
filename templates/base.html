@@ -78,9 +78,9 @@
                     <li class="{% if current_page == 'index' %}active{% endif %}"><a href="{% url 'index' %}">Home</a></li>
                     <li class="{% if current_pages == 'shop' %}active{% endif %}"><a href="{% url 'shop' %}">Shop</a></li>
                     {% if user.is_authenticated and user.is_superuser %}
-                    <li><a href="{% url 'adminpanel'%}">Admin</a></li>
+                    <li><a href="{% url 'adminpanel'%}">Admin panel</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user fa-lg"></i> Hy{{ user.first_name }}<span class="arrow-down"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user fa-lg"></i> {{ user.username }}<span class="arrow-down"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'profile' %}">My Profile</a></li>
                             <li><a href="{% url 'myorders' %}">My Orders</a></li>
@@ -89,7 +89,7 @@
                     </li>
                     {% elif user.is_authenticated %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i> Hy {{ user.first_name }} <span class="arrow-down"</span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i> Hy {{ user.username }} <span class="arrow-down"</span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'profile' %}">My Profile</a></li>
                             <li><a href="{% url 'myorders' %}">My Orders</a></li>
@@ -179,14 +179,13 @@
                                             <a class="nav-link" href="{% url 'index' %}">Home</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="shop.html">Shop</a>
-                                        </li>
-                                       
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">Checkout</a>
+                                            <a class="nav-link" href="{% url 'shop' %}">Shop</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">Account</a>
+                                            <a class="nav-link" href="{% url 'cart'%}">cart</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="checkout.html">wihslist</a>
                                         </li>
                                     </ul>
                                 </div>
