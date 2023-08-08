@@ -151,3 +151,30 @@ def edit_address(request, id):
         'address' : address,
     }
     return render(request, "address.html", context)
+
+def addaddress(request):
+
+    if request.method == "POST":
+       name = request.POST['fname']
+       ph_no = request.POST['no']
+       house = request.POST['house']
+       landmark = request.POST['landmark']
+       district = request.POST['district']
+       city = request.POST['city']
+       state = request.POST['state']
+       country = request.POST['country']
+
+
+       UserAddress.objects.create(
+            fullname = name,
+            contact_number = ph_no,
+            house_name = house,
+            landmark = landmark,
+            district = district,
+            city = city,
+            state = state,
+            country = country,
+
+       ).save()
+       messages.success(request, 'address added')
+    return render(request,"add_address.html")

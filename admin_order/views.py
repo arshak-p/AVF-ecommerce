@@ -3,6 +3,8 @@ from order.models import *
 
 # Create your views here.
 def order_details(request):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
     order_items = OrderItem.objects.all()
     context = {
         'order_items' : order_items,
@@ -10,6 +12,8 @@ def order_details(request):
     return render(request, 'adminpanel/page-orders-1.html', context)
 
 def order_manage(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
     cart_item = OrderItem.objects.get(id = id )
     if request.method == "POST":
         status = request.POST['status']

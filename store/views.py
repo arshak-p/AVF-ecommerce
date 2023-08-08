@@ -4,6 +4,9 @@ from .models import Product, Brand
 from category.models import Category
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from .models import Product, Category, Brand
 
 # Create your views here.
 
@@ -25,9 +28,8 @@ def filtered_products(request):
     selected_brands = request.GET.getlist('brand')
     search_query = request.GET.get('q')
 
-
     # Query the database to get the filtered products
-    filtered_products = Product.objects.filter(is_available = True)
+    filtered_products = Product.objects.filter(is_available=True)
     count = 0
     c = 0
     if search_query:
@@ -41,12 +43,19 @@ def filtered_products(request):
         filtered_products = filtered_products.filter(category__in=selected_categories)
         c = filtered_products.count()
         count += 1
-
     if selected_brands:
         filtered_products = filtered_products.filter(brand__in=selected_brands)
         count += 1
         c = filtered_products.count()
-    
+
+    # Get the current category
+    current_category = request.GET.get('category')
+
+    # Filter the products by the current category
+    if current_category:
+        filtered_products = filtered_products.filter(category=current_category)
+        c = filtered_products.count()
+
     if count == 0:
         filtered_products = None
 
@@ -58,7 +67,7 @@ def filtered_products(request):
         current_page = paginator.page(page_number)
     
     except PageNotAnInteger:
-        # If the 'page' parameter is not an integer, display the first page
+        
         current_page = paginator.page(1)
 
     except EmptyPage:

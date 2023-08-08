@@ -156,7 +156,7 @@ def place_order(request):
 @login_required(login_url='handlelogin')    
 def my_orders(request):
     
-    myorders = OrderItem.objects.all()
+    myorders = OrderItem.objects.all().order_by('-created_at')
     print("***************************", myorders, "******************************")
     context = {
         "myorders":myorders,

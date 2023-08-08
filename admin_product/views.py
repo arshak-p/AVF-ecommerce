@@ -2,11 +2,16 @@ from django.shortcuts import redirect, render
 from store.models import Product, ProductImage
 from django.contrib import messages
 from category.models import Category
+from admin_panel.views import super_admincheck
 from category.models import *
-
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
+@login_required
+@user_passes_test(super_admincheck) 
 def products(request):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
     products = Product.objects.all().filter(is_available = True)
     context = {
         'products' : products,
@@ -14,7 +19,13 @@ def products(request):
     }
     return render(request, 'adminpanel/page-products-grid-2.html', context)
 
+
+
+@login_required
+@user_passes_test(super_admincheck)
 def add_product(request):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
 
     if request.method == 'POST':
         image = ''
@@ -76,7 +87,11 @@ def add_product(request):
     }
     return render(request, 'adminpanel/page-form-product-1.html', context)
 
+@login_required
+@user_passes_test(super_admincheck)
 def edit_product(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
 
     if request.method == "POST":
 
@@ -135,8 +150,10 @@ def edit_product(request, id):
 
     return render(request, "adminpanel/product-update.html", context)
 
-
+@login_required(login_url='admin_login')
 def delete_product(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
 
     product = Product.objects.get(id=id)
     name = product.product_name
@@ -146,8 +163,10 @@ def delete_product(request, id):
     return redirect(products)
 
 # Category section
-
+@login_required(login_url='admin_login')
 def add_category(request):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
     
     if request.method == 'POST':        
         image = ''
@@ -191,8 +210,10 @@ def add_category(request):
     }
 
     return render(request, 'adminpanel/page-categories.html', context)
-
+@login_required(login_url='admin_login')
 def edit_category(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
     if request.method == "POST":
         name = request.POST['name']
         description = request.POST['desc']
@@ -210,8 +231,12 @@ def edit_category(request, id):
     }
     return render(request, "adminpanel/update-category.html", context)
 
-
+@login_required(login_url='admin_login')
 def delete_category(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
+
+    
     category = Category.objects.get(id=id)
     name = category.category_name
     category.is_available = False
@@ -220,8 +245,11 @@ def delete_category(request, id):
     return redirect(add_category)
 
 # brant section
-
+@login_required(login_url='admin_login')
 def add_brand(request):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
+    
     if request.method == "POST":
         image = ''
         try:
@@ -247,8 +275,11 @@ def add_brand(request):
     }
     return render(request,"adminpanel/brand.html", context)
 
-
+@login_required(login_url='admin_login')
 def edit_brand(request, id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
+    
     brand = Brand.objects.get(id=id)
     if request.method == "POST":
         image = ''
@@ -268,7 +299,11 @@ def edit_brand(request, id):
         return redirect(add_brand)
     return render(request, 'adminpanel/editbrand.html', {'brand':brand,})
 
+@login_required(login_url='admin_login')
 def delete_brand(request,id):
+    if not request.user.is_authenticated and not request.user.is_superuser:
+        return render(request, 'index.html')
+    
     brand = Brand.objects.get(id=id)
     name = brand.brand_name
     brand.is_available = False
