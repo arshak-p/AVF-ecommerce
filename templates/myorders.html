@@ -159,7 +159,7 @@ type="text/css"
                                 {% endif %}
                               </div>
                           </td>
-                          <td class="invert"><a href="{% url 'invoice'  %}">View details</a></td>
+                          <td class="invert"><a href="{% url 'invoice' item.id %}'  %}">View details</a></td>
                       </tr>
                   {% endfor %}
                   </tbody>

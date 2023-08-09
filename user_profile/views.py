@@ -179,6 +179,7 @@ def add_address(request):
             user = request.user
 
        ).save()
+       messages.success(request, 'Your details successfully added')
        return redirect(profile)
        
     return render(request, 'add_address.html')

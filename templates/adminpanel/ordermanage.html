@@ -15,7 +15,7 @@
                   <p class="card-text"><b>Status    : </b>{{ cart_item.status }}</p>
                 </div>
                 <div>
-                <button class="btn btn-success"><a href="{% url 'invoice' %}" style="color:black; text-decoration:none;">View Invoice</a></button>
+                <button class="btn btn-success"><a href="{% url 'invoice' cart_item.id %}" style="color:black; text-decoration:none;">View Invoice</a></button>
                 </div>
                 <form method="POST" action="{% url 'ordermanage' cart_item.id %}">
                     {% csrf_token %}

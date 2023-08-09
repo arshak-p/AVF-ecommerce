@@ -1,5 +1,6 @@
-<head>
-  <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>AVF-invoice</title>
   <meta name="robots" content="noindex, follow" />
@@ -9,65 +10,196 @@
    <!-- Favicon  -->
    <link rel="icon" href="/static/assets/img/core-img/logobw.png">
 
-   <!-- Core Style CSS -->
-   <link rel="stylesheet" href="/static/assets/css/core-style.css">
-   <link rel="stylesheet" href="/static/assets/style.css">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/vendor/bootstrap.min.css">
-  <!-- Font Awesome CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/vendor/font.awesome.min.css">
-  <!-- Linear Icons CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/vendor/linearicons.min.css">
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/plugins/swiper-bundle.min.css">
-  <!-- Animation CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/plugins/animate.min.css">
-  <!-- Jquery ui CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/plugins/jquery-ui.min.css">
-  <!-- Nice Select CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/plugins/nice-select.min.css">
-  <!-- Magnific Popup -->
-  <link rel="stylesheet" href="/static/assets2/css/plugins/magnific-popup.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/assets/css/core-style.css">
+    <link rel="stylesheet" href="/static/assets/style.css">
+    <link rel="stylesheet" href="/static/assets2/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/vendor/font.awesome.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/vendor/linearicons.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/plugins/animate.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/plugins/jquery-ui.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/plugins/nice-select.min.css">
+    <link rel="stylesheet" href="/static/assets2/css/plugins/magnific-popup.css">
+    <link rel="stylesheet" href="/static/assets2/css/style.css">
+    <link href="/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link href="/static/css/login_overlay.css" rel='stylesheet' type='text/css' />
+    <link href="/static/css/style6.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="/static/css/shop.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/checkout.css">
+    <link href="/static/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
+    <link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 
-  <!-- Main Style CSS -->
-  <link rel="stylesheet" href="/static/assets2/css/style.css">
-  <link
-href="/static/admin_assets/css/main.css?v=1.1"
-rel="stylesheet"
-type="text/css"
-  />
+    <style>
+        .card {
+            box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 1rem;
+        }
+    </style>
+    
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
 </head>
 <body>
-
-      
-  <!-- off-canvas menu start -->
-  
-  <!-- off-canvas menu end -->
-  </header>
-  <!-- Header Area End Here -->
-  <!-- Breadcrumb Area Start Here -->
-  <div class="breadcrumbs-area position-relative">
-      <div class="container">
-          <div class="row">
-              <div class="col-12 text-center">
-                  <div class="breadcrumb-content position-relative section-content">
-                      <h3 class="title-3">invoice</h3>
-                      <ul>
-                          <li><a href="{% url 'index' %}">Home</a></li>
-                          
-                      </ul>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="breadcrumbs-area position-relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="breadcrumb-content position-relative section-content">
+                        <h3 class="title-3">order-conformed</h3>
+                        <ul>
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
 
 
 
 
+<div class="d-print-none p-5" style="display:flex; justify-content:center;">
+    {% if not f %} <h1>Order Confirmed</h1> {% endif %}
+ </div>
+ <div class="container">
+ <div class="row">
+         <div class="col-lg-12">
+             <div class="card">
+                 <div class="card-body">
+                     <div class="invoice-title">
+                         <h4 class="float-end font-size-15">Invoice {{ order.order_id }} <span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                         <div class="mb-4">
+                            <h2 class="mb-1 text-muted">AVF</h2>
+                         </div>
+                         <div class="text-muted">
+                             <p class="mb-1">kinfra industrial techno park , calicut, PA 15201</p>
+                             <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i> AVFecome@gmail.com</p>
+                             <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                         </div>
+                     </div>
+ 
+                     <hr class="my-4">
+ 
+                     <div class="row">
+                         <div class="col-sm-6">
+                             <div class="text-muted">
+                                 <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                 <h5 class="font-size-15 mb-2">{{ order.address.fullname }}</h5>
+                                 <p class="mb-1">{{ order.address.house_name }} {{ order.address.city }}, {{ order.address.pincode }}</p>
+                                 <p class="mb-1">{{ user.email }}</p>
+                                 <p>{{order.address.contact_number }}</p>
+                             </div>
+                         </div>
+                         <!-- end col -->
+                         <div class="col-sm-6">
+                             <div class="text-muted text-sm-end">
+                                 <div>
+                                     <h5 class="font-size-15 mb-1">Invoice No:</h5>
+                                     <p>{{ order.order_id }}</p>
+                                 </div>
+                                 <div class="mt-4">
+                                     <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                                     <p>{{ order.created_at }}</p>
+                                 </div>
+                             </div>
+                         </div>
+                         <!-- end col -->
+                     </div>
+                     <!-- end row -->
+                     <br>
+                     <div class="py-2">
+                         <h5 class="font-size-15">Order Summary</h5>
+ 
+                         <div class="table-responsive">
+                             <table class="table align-middle table-nowrap table-centered mb-0">
+                                 <thead>
+                                     <tr>
+                                         <th style="width: 70px;">No.</th>
+                                         <th>Item</th>
+                                         <th>Price</th>
+                                         <th>Quantity</th>
+                                         <th class="text-end" style="width: 120px;">Total</th>
+                                     </tr>
+                                 </thead><!-- end thead -->
+                                 <tbody>
+                                     {% for item in orderitems %}
+                                     
+                                     
+                                     <tr>
+                                         <th scope="row">01</th>
+                                         <td>
+                                             <div>
+                                                 <h5 class="text-truncate font-size-14 mb-1">{{ item.product.product_name }}</h5>
+                                                 <p class="text-muted mb-0">{{ item.product.category.category_name }}</p>
+                                             </div>
+                                         </td>
+                                         <td>&#8377; {{ item.product_price }}</td>
+                                         <td>{{ item.quantity }}</td>
+                                         <td class="text-end">&#8377; {{ item.sub_total }}</td>
+                                     </tr>
+                                     {% endfor %}
+                                     <!-- end tr -->
+                                     <!-- end tr -->
+                                     {% if order.coupon_discount %}
+                                     <tr>
+                                         <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                         <td class="text-end">&#8377; {{ pretotal }}</td>
+                                     </tr>
+                                     <!-- end tr -->
+                                     
+                                     <tr>
+                                         <th scope="row" colspan="4" class="border-0 text-end">
+                                             Discount :</th>
+                                         <td class="border-0 text-end">- &#8377;{{ order.coupon_discount }}</td>
+                                     </tr>
+                                     {% endif %}
+                                     <!-- end tr -->
+                                     <tr>
+                                         <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                         <td class="border-0 text-end"><h4 class="m-0 fw-semibold">&#8377;{{ total }}</h4></td>
+                                     </tr>
+                                     <!-- end tr -->
+                                 </tbody><!-- end tbody -->
+                             </table><!-- end table -->
+                         </div><!-- end table responsive -->
+                         <div class="d-print-none mt-4">
+                             <div class="float-end">
+                                 <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                 <a href="#" class="btn btn-primary w-md">Send</a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div><!-- end col -->
+     </div>
+ </div>
 
-  <section class="newsletter-area section-padding-100-0">
+
+ <!-- ##### Newsletter Area Start ##### -->
+ <section class="newsletter-area section-padding-100-0">
     <div class="container">
         <div class="row align-items-center">
             <!-- Newsletter Text -->
@@ -139,3 +271,135 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> <i cl
         </div>
     </div>
 </footer>
+
+	<!--jQuery-->
+	<script src="static/js/jquery-2.2.3.min.js"></script>
+	<!--search jQuery-->
+	<script src="static/js/modernizr-2.6.2.min.js"></script>
+	<script src="static/js/classie-search.js"></script>
+	<script src="static/js/demo1-search.js"></script>
+	<!--//search jQuery-->
+	<!-- cart-js -->
+	<script src="static/js/minicart.js"></script>
+	<script>
+		googles.render();
+
+		googles.cart.on('googles_checkout', function (evt) {
+			var items, len, i;
+
+			if (this.subtotal() > 0) {
+				items = this.items();
+
+				for (i = 0, len = items.length; i < len; i++) {}
+			}
+		});
+	</script>
+	<!-- //cart-js -->
+	<script>
+		$(document).ready(function () {
+			$(".button-log a").click(function () {
+				$(".overlay-login").fadeToggle(200);
+				$(this).toggleClass('btn-open').toggleClass('btn-close');
+			});
+		});
+		$('.overlay-close1').on('click', function () {
+			$(".overlay-login").fadeToggle(200);
+			$(".button-log a").toggleClass('btn-open').toggleClass('btn-close');
+			open = false;
+		});
+	</script>
+	<!-- carousel -->
+	<!-- Count-down -->
+	<script src="static/js/simplyCountdown.js"></script>
+	<link href="static/css/simplyCountdown.css" rel='stylesheet' type='text/css' />
+	<script>
+		var d = new Date();
+		simplyCountdown('simply-countdown-custom', {
+			year: d.getFullYear(),
+			month: d.getMonth() + 2,
+			day: 25
+		});
+	</script>
+	<!--// Count-down -->
+	<script src="static/js/owl.carousel.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('.owl-carousel').owlCarousel({
+				loop: true,
+				margin: 10,
+				responsiveClass: true,
+				responsive: {
+					0: {
+						items: 1,
+						nav: true
+					},
+					600: {
+						items: 2,
+						nav: false
+					},
+					900: {
+						items: 3,
+						nav: false
+					},
+					1000: {
+						items: 4,
+						nav: true,
+						loop: false,
+						margin: 20
+					}
+				}
+			})
+		})
+	</script>
+
+	<!-- //end-smooth-scrolling -->
+
+
+	<!-- dropdown nav -->
+	<script>
+		$(document).ready(function () {
+			$(".dropdown").hover(
+				function () {
+					$('.dropdown-menu', this).stop(true, true).slideDown("fast");
+					$(this).toggleClass('open');
+				},
+				function () {
+					$('.dropdown-menu', this).stop(true, true).slideUp("fast");
+					$(this).toggleClass('open');
+				}
+			);
+		});
+	</script>
+	<!-- //dropdown nav -->
+  <script src="static/js/move-top.js"></script>
+    <script src="static/js/easing.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event) {
+                event.preventDefault();
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 900);
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            /*
+            						var defaults = {
+            							  containerID: 'toTop', // fading element id
+            							containerHoverID: 'toTopHover', // fading element hover id
+            							scrollSpeed: 1200,
+            							easingType: 'linear' 
+            						 };
+            						*/
+
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
+        });
+    </script>
+    <!--// end-smoth-scrolling -->
+
+	<script src="static/js/bootstrap.js"></script>

@@ -13,30 +13,17 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required(login_url='handlelogin')
-def payments(request, total = 0, pretotal=0):
+def payments(request, total = 0):
 
     # saving payment details
     if request.user.is_authenticated:
-        current_user = request.user
         payment_method = PaymentMethod.objects.get(id=1)
         payment = Payment(
             user = request.user,
             payment_method = payment_method,
         )
         payment.save()
-        if request.method == "POST":
-            addr = request.POST['address']
-            address = UserAddress.objects.get(id=addr)
-        else:
-            address = UserAddress.objects.filter(user=current_user).order_by('-id').first() 
-
-        data = Order()
-        data.user = current_user
-        data.address = address
-        data.order_total = total
-        data.save()
-        order = Order.objects.get(user = current_user, status=data.status, order_id=data.order_id)
-    
+        order = Order.objects.filter(user=request.user).order_by('-id').first()
         order.payment = payment
         order.status = 'accepted'
         order.save()
@@ -45,7 +32,11 @@ def payments(request, total = 0, pretotal=0):
         cart_items = CartItem.objects.filter(user=request.user)
         for cart_item in cart_items:
             product_price = 0
-           
+            # if cart_item.product.offer:
+            #     product_price = cart_item.product.get_offer_price()
+            # elif cart_item.product.category.offer:
+            #     product_price = cart_item.product.get_offer_price_by_category()
+            # else:
             product_price = cart_item.product.price
 
             orderitem = OrderItem(
@@ -84,18 +75,22 @@ def payments(request, total = 0, pretotal=0):
         cart.save()
 
         orderitems = OrderItem.objects.filter(user=request.user, order=order)
-        if order.coupon_discount:
-            pretotal=total
-            total -= order.coupon_discount
+        # if order.coupon_discount:
+        #     pretotal=total
+        #     total -= order.coupon_discount
 
         context = {
             'order' : order,
             'orderitems' : orderitems,
             'total' : total,
-            'pretotal':pretotal,
+            # 'pretotal':pretotal,
             
         }
-        return render(request, "confirm.html", context)
+   
+
+        return render(request, "invoice.html", context)
+
+    return render(request, 'payment.html') 
 
 
 @login_required(login_url='handlelogin')
@@ -126,7 +121,7 @@ def place_order(request):
 
             # total -= discount_amount
         if cart_count <= 0:
-            return redirect('store')
+            return redirect('shop')
 
         if request.method == "POST":
             addr = request.POST['address']
@@ -151,17 +146,25 @@ def place_order(request):
             # 'payment' : payment,
             'discount_amount': discount_amount,
         }
-        return render(request,'pyment.html', context)
+        return render(request,'payment.html', context)
+
+# @login_required(login_url='handlelogin')    
+# def my_orders(request):
+    
+#     myorders = OrderItem.objects.all().order_by('-created_at')
+#     print("***************************", myorders, "******************************")
+#     context = {
+#         "myorders":myorders,
+#     }
+#     return render(request, 'myorders.html', context)
 
 @login_required(login_url='handlelogin')    
 def my_orders(request):
-    
-    myorders = OrderItem.objects.all().order_by('-created_at')
-    print("***************************", myorders, "******************************")
+    myorders = OrderItem.objects.filter(Q(user=request.user) & ~Q(status='pending'))
     context = {
         "myorders":myorders,
     }
-    return render(request, 'myorder.html', context)
+    return render(request, 'myorders.html', context)
 
 
 @login_required(login_url='handlelogin')
@@ -187,7 +190,52 @@ def cancel_orders(request, id):
 
 
 
-# invoice function
+# # invoice function
+# @login_required(login_url='handlelogin')
+# def invoice(request, id):
+#     total = 0
+#     pretotal = 0
+#     # id from user side(my orders)
+#     order_item = OrderItem.objects.get(id = id)
+#     # for retreving the order
+#     order = Order.objects.get(order_id = order_item.order.order_id)
+#     # for retreving all ordered items in that order
+#     order_items = OrderItem.objects.filter(order = order)
+#     for item in order_items:
+#         total += item.sub_total()
+#     if order.coupon_discount:
+#             pretotal=total
+#             total -= order.coupon_discount
+#     context = {
+#         'order':order,
+#         'orderitems':order_items,
+#         'total' : total,
+#         'pretotal':pretotal,
+#         'f':True,
+
+#     }
+#     return render(request, 'invoice.html', context)
+
+    # invoice function
 @login_required(login_url='handlelogin')
-def invoice(request):
-    return render(request, 'invoice.html')
+def invoice(request, id):
+    total = 0
+    pretotal = 0
+    # id from user side(my orders)
+    order_item = OrderItem.objects.get(id = id)
+    # for retreving the order
+    order = Order.objects.get(order_id = order_item.order.order_id)
+    # for retreving all ordered items in that order
+    order_items = OrderItem.objects.filter(order = order)
+    for item in order_items:
+        total += item.sub_total()
+    
+    context = {
+        'order':order,
+        'orderitems':order_items,
+        'total' : total,
+        'pretotal':pretotal,
+        'f':True,
+
+    }
+    return render(request, 'invoice.html', context)
