@@ -152,17 +152,18 @@ def edit_address(request, id):
     }
     return render(request, "address.html", context)
 
+@login_required(login_url='handlelogin')
 def add_address(request):
-
     if request.method == "POST":
-       name = request.POST['fname']
-       ph_no = request.POST['no']
+       name = request.POST['name']
+       ph_no = request.POST['ph_no']
        house = request.POST['house']
        landmark = request.POST['landmark']
        district = request.POST['district']
        city = request.POST['city']
        state = request.POST['state']
        country = request.POST['country']
+       pincode = request.POST['pincode']
 
 
        UserAddress.objects.create(
@@ -174,7 +175,10 @@ def add_address(request):
             city = city,
             state = state,
             country = country,
+            pincode = pincode,
+            user = request.user
 
        ).save()
-       messages.success(request, 'address added')
-    return render(request,"add_address.html")
+       return redirect(profile)
+       
+    return render(request, 'add_address.html')
