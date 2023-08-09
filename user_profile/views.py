@@ -152,7 +152,7 @@ def edit_address(request, id):
     }
     return render(request, "address.html", context)
 
-def addaddress(request):
+def add_address(request):
 
     if request.method == "POST":
        name = request.POST['fname']

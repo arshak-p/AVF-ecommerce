@@ -23,8 +23,27 @@
             {% endfor %}
         </div>
     </div>
-    <!-- ##### Single Widget ##### -->
-    <div class="widget brands mb-50">
+    
+    <form action="/store/filtered-product/" method="get">
+        <!-- Brands -->
+        <div class="left-side">
+            <h6 class="widget-title mb-30">Brands</h6>
+
+            <ul>
+                {% for i in brand %}
+                <li class="m-4">
+                    
+                    <input class="form-check-input" type="checkbox" name="brand" value="{{ i.id }}" class="checked">
+                    <label class="form-check-label" for="brand_{{ i.id }}">{{ i.brand_name }}</label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <br>
+        <input class="btn btn-dark" type="submit" value="Apply Filters">
+    </form>
+    {% comment %} <div class="widget brands mb-50">
         <!-- Widget Title -->
         <h6 class="widget-title mb-30">Brands</h6>
 
@@ -38,10 +57,10 @@
                 <a href="/store/filtered-product/?brand={{ i.id }}">
                   <label class="form-check-label" for="brand_{{ i.id }}">{{ i.brand_name }}</label>
                 </a>
-              </div>
+            </div>
             {% endfor %}
         </div>
-    </div>
+    </div> {% endcomment %}
 
     <!-- ##### Single Widget ##### -->
     {% comment %} <div class="widget color mb-50">
@@ -65,7 +84,7 @@
     <!-- ##### Single Widget ##### -->
     <div class="widget price mb-50">
         <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Price</h6>
+        <h6 class="widget-title mb-30 mt-3" >Price</h6>
 
         <div class="widget-desc">
             <div class="slider-range">
