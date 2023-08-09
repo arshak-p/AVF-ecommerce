@@ -48,6 +48,8 @@ def filtered_products(request):
         count += 1
         c = filtered_products.count()
 
+    
+
     # Get the current category
     current_category = request.GET.get('category')
 
@@ -56,8 +58,8 @@ def filtered_products(request):
         filtered_products = filtered_products.filter(category=current_category)
         c = filtered_products.count()
 
-    if count == 0:
-        filtered_products = None
+    # if count == 0:
+    #     filtered_products = None
 
     per_page = 4
     page_number = request.GET.get('page')

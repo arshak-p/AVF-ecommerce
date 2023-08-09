@@ -24,10 +24,10 @@
         </div>
     </div>
     
-    <form action="/store/filtered-product/" method="get">
+    <form class="widget-desc" action="/store/filtered-product/" method="get">
         <!-- Brands -->
         <div class="left-side">
-            <h6 class="widget-title mb-30">Brands</h6>
+            <h6 class="widget brands mb-50">Brands</h6>
 
             <ul>
                 {% for i in brand %}
@@ -39,28 +39,10 @@
                 {% endfor %}
             </ul>
         </div>
-    
         <br>
         <input class="btn btn-dark" type="submit" value="Apply Filters">
     </form>
-    {% comment %} <div class="widget brands mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Brands</h6>
-
-        <div class="widget-desc">
-            
-            <!-- Single Form Check -->
-            {% for i in brand %}
-            <li class=""><a href="/store/filtered-product/?category={{ i.id }}">{{ i.brand_name}}</a></li>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="brand_{{ i.id }}">
-                <a href="/store/filtered-product/?brand={{ i.id }}">
-                  <label class="form-check-label" for="brand_{{ i.id }}">{{ i.brand_name }}</label>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div> {% endcomment %}
+    
 
     <!-- ##### Single Widget ##### -->
     {% comment %} <div class="widget color mb-50">
@@ -82,7 +64,7 @@
     </div> {% endcomment %}
 
     <!-- ##### Single Widget ##### -->
-    <div class="widget price mb-50">
+    {% comment %} <div class="widget price mb-50">
         <!-- Widget Title -->
         <h6 class="widget-title mb-30 mt-3" >Price</h6>
 
@@ -96,7 +78,7 @@
                 <div class="range-price">$1000 - $10000</div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 </div>
 
 <div class="amado_product_area section-padding-100">
@@ -112,7 +94,7 @@
                     </div>
                     <!-- Sorting -->
                     <div class="product-sorting d-flex">
-                        <div class="sort-by-date d-flex align-items-center mr-15">
+                        {% comment %} <div class="sort-by-date d-flex align-items-center mr-15">
                             <p>Sort by</p>
                             <form action="#" method="get">
                                 <select name="select" id="sortBydate">
@@ -121,8 +103,8 @@
                                     <option value="value">Popular</option>
                                 </select>
                             </form>
-                        </div>
-                        <div class="view-product d-flex align-items-center">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="view-product d-flex align-items-center">
                             <p>View</p>
                             <form action="#" method="get">
                                 <select name="select" id="viewProduct">
@@ -132,7 +114,7 @@
                                     <option value="value">96</option>
                                 </select>
                             </form>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </div>

@@ -187,8 +187,6 @@ def cancel_orders(request, id):
 
 
 
-
-# invoice function
 # invoice function
 @login_required(login_url='handlelogin')
 def invoice(request):
