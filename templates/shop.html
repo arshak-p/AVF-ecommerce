@@ -4,6 +4,20 @@
 {% block title %} AVF-Shop {% endblock title %}
 
 {% block content %}
+<style>
+    .fav-nav-button {
+        border: none;
+        background: none;
+        padding: 0;
+    }
+</style>
+<style>
+    .cart-button {
+        border: none;
+        background: none;
+        padding: 0;
+    }
+</style>
 
 <div class="shop_sidebar_area">
 
@@ -152,9 +166,17 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
+                            {% comment %} <div class="fav-nav">
+                                <a href="#" class="fav-nav-button" data-toggle="tooltip" data-placement="left" title="Add to Favourite">
+                                    <img src="/static/assets/img/core-img/favorites.png" alt="">
+                                </a>
+                            </div> {% endcomment %}
+                            
+                            
                             {% if product.stock <= 0 %}
                             <h7>out of stock</h7>
                             {% else %}
+
                             <div class="cart">
                             
                            
@@ -162,6 +184,7 @@
                                
                             </div>
                             {% endif %}
+                            
                         </div>
                     </div>
                 </div>

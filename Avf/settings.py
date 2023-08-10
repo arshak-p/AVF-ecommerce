@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'checkout',
     'order',
     'user_profile',
+    'wishlist',
+    
     ]
 
 MIDDLEWARE = [
@@ -163,3 +165,14 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER= 'arshakyob@gmail.com'
 EMAIL_HOST_PASSWORD= 'efpnjnksbhrnnvuk'
+
+# payment integration 
+KEY = 'rzp_test_eYx1bJeJNl0JW1'
+KEY_SECRET = 'LH5SUmvkXODZ7zGsS9f9MPcm'
+
+
+CORS_ALLOWED_ORIGINS = [
+    'https://razorpay.com',  # Add more domains if needed
+]
+
+CORS_ALLOW_CREDENTIALS = True

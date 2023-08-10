@@ -114,29 +114,24 @@
 
                     <!-- Add to Cart Form -->
                     
-                        {% csrf_token %}
-                        {% comment %} <div class="cart-btn d-flex mb-50">
-                            <p>Qty</p>
-                            <div class="quantity">
-                                <a  href="{% url 'removecart' cart_item.product.id %}"><span class="qty-minus">
-                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                </span></a>
-                                
-                                <input type="number" class="qty-text" id="qty" step="{{ cart_item.quantity }}" min="{{ count }}" max="300" name="quantity" value="{{ cart_item.quantity }}">
-                               <a  href="{% url 'addcart' cart_item.product.id %}"> <span class="qty-plus" >
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </span><a>
-
-                            </div>
-                        </div> {% endcomment %}
-                        {% if single_product.stock <= 0 %}
-                        <h4>out of stock</h4>
-                        {% else %}
-                        <a href="{% url 'addcart' single_product.id %}">
-                            <button  name="addtocart"  class="btn amado-btn">Add to cart</button>
-                        </a>
-                        {% endif %}   
-                
+                        
+                        
+                        <div style="display: flex; flex-direction: row;">
+                            <form action="{% url 'add_wishlist' single_product.id %}" method="post" style="margin-right: 10px;">
+                                {% csrf_token %}
+                                <!-- Your form fields and other content here, if needed -->
+                                <input type="submit" name="addtocart" class="btn amado-btn" value="Add to Favourite">
+                            </form>
+                            
+                            {% if single_product.stock <= 0 %}
+                                <h4>out of stock</h4>
+                            {% else %}
+                                <a href="{% url 'addcart' single_product.id %}">
+                                    <button name="addtocart" class="btn amado-btn">Add to cart</button>
+                                </a>
+                            {% endif %}
+                        </div>
+                        
 
                 </div>
             </div>

@@ -111,7 +111,7 @@
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
                 <a href="{% url 'cart'%}" class="cart-nav"><img src="/static/assets/img/core-img/cart.png" alt=""> Cart <span>({{count}})</span></a>
-                <a href="#" class="fav-nav"><img src="/static/assets/img/core-img/favorites.png" alt=""> Favourite</a>
+                <a href="{% url 'wishlist' %}" class="fav-nav"><img src="/static/assets/img/core-img/favorites.png" alt=""> Favourite</a>
                 <a href="#" class="search-nav"><img src="/static/assets/img/core-img/search.png" alt=""> Search</a>
             </div>
             <!-- Social Button -->
@@ -185,7 +185,7 @@
                                             <a class="nav-link" href="{% url 'cart'%}">cart</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">wihslist</a>
+                                            <a class="nav-link" href="{% url 'wishlist' %}">wihslist</a>
                                         </li>
                                     </ul>
                                 </div>
