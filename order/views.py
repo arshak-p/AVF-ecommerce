@@ -185,12 +185,7 @@ def cancel_orders(request, id):
     )
     return redirect(my_orders)
 
-# after razorpay payment
 
-# this method that redirecting from razorpay webiste. this method will redirect to success function
-@csrf_exempt
-def pre_success(request):
-    return redirect(success)
 
 
 
@@ -263,6 +258,14 @@ def success(request, total = 0):
             
         }
         return render(request, "invoice.html", context)
+
+
+# after razorpay payment
+
+# this method that redirecting from razorpay webiste. this method will redirect to success function
+@csrf_exempt
+def pre_success(request):
+    return redirect(success)
 
 
 # # invoice function
