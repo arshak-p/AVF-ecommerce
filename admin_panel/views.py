@@ -26,11 +26,6 @@ def super_admincheck(user):
     return False
 
 
-def adminpanel(request):
-    if request.user.is_authenticated and request.user.is_superuser:
-    
-        return render(request, 'adminpanel/index.html')
-    return render(request, 'index.html')
 
 
 
