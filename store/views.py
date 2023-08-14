@@ -82,8 +82,8 @@ def filtered_products(request):
     context = {
         "current_page": current_page,
         'products' : filtered_products,
-        'categories' : categories,
-        'brands' : brand,
+        'categorys' : categories,
+        'brand' : brand,
         'c' : c,
         'f': True,
     }
