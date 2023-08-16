@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from category.models import Category, Brand
-
+from offers.models import Coupon, Offer
 # Create your models here.
 
 class Product(models.Model):
@@ -15,6 +15,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True, blank=True)
 
     def is_outofstock(self):
         return self.stock <= 0 
@@ -22,6 +23,13 @@ class Product(models.Model):
    
     def __str__(self):
         return self.product_name
+    
+
+    def get_offer_price(self):
+        return int(self.price - (self.price * self.offer.off_percent / 100))
+    
+    def get_offer_price_by_category(self):
+        return int(self.price - (self.price * self.category.offer.off_percent / 100))
 
 
 

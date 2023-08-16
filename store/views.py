@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from .models import Product, Category, Brand
+from offers.models import Offer
 
 # Create your views here.
 

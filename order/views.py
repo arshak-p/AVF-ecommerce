@@ -13,7 +13,7 @@ import razorpay
 
 # Create your views here.
 @login_required(login_url='handlelogin')
-def payments(request, total = 0):
+def payments(request, total = 0, pretotal=0):
 
     # saving payment details
     if request.user.is_authenticated:
@@ -32,8 +32,12 @@ def payments(request, total = 0):
         cart_items = CartItem.objects.filter(user=request.user)
         for cart_item in cart_items:
             product_price = 0
-            # ************
-            product_price = cart_item.product.price
+            if cart_item.product.offer:
+                product_price = cart_item.product.get_offer_price()
+            elif cart_item.product.category.offer:
+                product_price = cart_item.product.get_offer_price_by_category()
+            else:
+                product_price = cart_item.product.price
 
             orderitem = OrderItem(
                 user = request.user,
@@ -71,12 +75,14 @@ def payments(request, total = 0):
         cart.save()
 
         orderitems = OrderItem.objects.filter(user=request.user, order=order)
-          #  *****
+        if order.coupon_discount:
+            pretotal=total
+            total -= order.coupon_discount
         context = {
             'order' : order,
             'orderitems' : orderitems,
             'total' : total,
-        #    ****
+            'pretotal':pretotal,
             
         }
    
@@ -99,10 +105,19 @@ def place_order(request):
             if cart_item.quantity > cart_item.product.stock:
                 print("cart item out of stock")
                 return redirect('cart')
-            # ***********
+            elif cart_item.product.category.offer:
+                total += cart_item.sub_total_with_offer_category()
             else:
                 total += cart_item.sub_total()
-        # *******
+        cart = Cart.objects.get(session_id=_session_id(request))
+        if cart.coupon:
+            discount_amount = total * cart.coupon.off_percent / 100
+
+            if discount_amount > cart.coupon.max_discount:
+                discount_amount = cart.coupon.max_discount
+
+            total -= discount_amount
+
         if cart_count <= 0:
             return redirect('shop')
 
@@ -116,7 +131,7 @@ def place_order(request):
         data.user = current_user
         data.address = address
         data.order_total = total
-        # ********
+        data.coupon_discount = discount_amount
         data.save()
         order = Order.objects.get(user = current_user, status=data.status, order_id=data.order_id)
         
@@ -251,7 +266,7 @@ def pre_success(request):
 @login_required(login_url='handlelogin')
 def invoice(request, id):
     total = 0
-    # ****
+    pretotal = 0
     # id from user side(my orders)
     order_item = OrderItem.objects.get(id = id)
     # for retreving the order
@@ -260,12 +275,14 @@ def invoice(request, id):
     order_items = OrderItem.objects.filter(order = order)
     for item in order_items:
         total += item.sub_total()
-    
+    if order.coupon_discount:
+            pretotal=total
+            total -= order.coupon_discount
     context = {
         'order':order,
         'orderitems':order_items,
         'total' : total,
-        # *****
+        'pretotal':pretotal,
         'f':True,
 
     }

@@ -2,6 +2,7 @@ from django.db import models
 import random
 from django.contrib.auth.models import User
 from store.models import Product
+from offers.models import Coupon
 
 # Create your models here.
 def generate_cart_id():
@@ -15,6 +16,7 @@ class Cart(models.Model):
     cart_id = models.IntegerField(unique=True,default=generate_cart_id)
     session_id = models.TextField(default=None)
     date_created = models.DateTimeField(auto_now_add=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
 
 
     def __str__(self):
@@ -29,6 +31,13 @@ class CartItem(models.Model):
 
     def sub_total(self):
         return self.product.price * self.quantity
+    
+    def sub_total_with_offer(self):
+        return int((self.sub_total()) - ( self.sub_total() * self.product.offer.off_percent / 100))
+    
+    def sub_total_with_offer_category(self):
+        return int((self.sub_total()) - ( self.sub_total() * self.product.category.offer.off_percent / 100))
+
     
     def __str__(self):
         return self.product.product_name
