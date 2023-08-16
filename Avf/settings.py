@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'order',
     'user_profile',
     'wishlist',
-    
+    'offers',
     ]
 
 MIDDLEWARE = [
@@ -170,6 +170,7 @@ EMAIL_HOST_PASSWORD= 'efpnjnksbhrnnvuk'
 KEY = 'rzp_test_eYx1bJeJNl0JW1'
 KEY_SECRET = 'LH5SUmvkXODZ7zGsS9f9MPcm'
 
+TIME_ZONE = 'Asia/kolkata'
 
 CORS_ALLOWED_ORIGINS = [
     'https://razorpay.com',  # Add more domains if needed

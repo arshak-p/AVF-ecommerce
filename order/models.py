@@ -5,6 +5,7 @@ from store.models import Product
 import string
 import random
 from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
 def generate_order_id():

@@ -91,17 +91,28 @@
               <a href="{% url 'userdetails' %}">Users</a>
             </div>
           </li>
-          <li class="menu-item">
+          {% comment %} <li class="menu-item">
             <a class="menu-link" href="page-reviews.html">
               <i class="icon material-icons md-comment"></i>
               <span class="text">Reviews</span>
             </a>
-          </li>
+          </li> {% endcomment %}
           <li class="menu-item">
             <a class="menu-link" href="{% url 'addbrand' %}">
               <i class="icon material-icons md-stars"></i>
               <span class="text">Brands</span>
             </a>
+          </li>
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="page-products-list.html">
+              <i class="icon material-icons md-percentage"></i>
+              <span class="text">Offers</span>
+            </a>
+            <div class="submenu">
+              <a href="{% url 'addoffer' %}">Offer</a>
+              <a href="{% url 'addcoupon' %}">Coupon</a>
+              
+            </div>
           </li>
           <li class="menu-item">
             <a class="menu-link" disabled href="{% url 'sales' %}">
