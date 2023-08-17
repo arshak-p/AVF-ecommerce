@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from store.models import Product
 from django.contrib import messages
+from offers.models import Coupon
 from .models import Cart,CartItem
 # Create your views here.
 
@@ -26,6 +27,7 @@ def add_cart(request, product_id):
             session_id = _session_id(request)
         )
    
+    cart.coupon = None
     cart.save()
 
     try:
@@ -61,6 +63,7 @@ def add_cart(request, product_id):
 def remove_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = Cart.objects.get(session_id=_session_id(request))
+    cart.coupon = None
     cart.save()
     if request.user.is_authenticated:
         cart_item = CartItem.objects.get(product=product, user=request.user)
@@ -79,6 +82,7 @@ def remove_cart(request, product_id):
 def delete_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = Cart.objects.get(session_id=_session_id(request))
+    cart.coupon = None
     cart.save()
     if request.user.is_authenticated:
         cart_item = CartItem.objects.get(product=product, user=request.user)
@@ -90,32 +94,70 @@ def delete_cart(request, product_id):
 
 # For showing cart items on cart page 
 
-def cart(request, total=0, quantity=0, cart_items=None,count=0, cart=None, subtotal=0):
+def cart(request, total=0, quantity=0, cart_items=None,count=0,coupons=None, cart=None,discount_amount=0, subtotal=0):
 
     try:
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            coupons = Coupon.objects.all()
         else:
             cart = Cart.objects.get(session_id = _session_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
             
         for cart_item in cart_items:
-            total += cart_item.sub_total()
-            quantity += cart_item.quantity
-            count +=1
+            if cart_item.product.offer:
+                total += cart_item.sub_total_with_offer()
+            elif cart_item.product.category.offer:
+                total += cart_item.sub_total_with_offer_category()
+            else:
+                total += cart_item.sub_total()
 
+            quantity += cart_item.quantity
+            count += 1
             subtotal = total
         
        
     except:
         pass
 
+    # for adding coupons
+    if request.method == "POST":
+        coup = request.POST['search']
+        try:
+            coupon = Coupon.objects.get(coupon_code = coup)
+            if coupon.is_expired():
+                messages.error(request, 'Coupon is expired')
+                return redirect('cart')
+            
+            if coupon.min_amount > total:
+                messages.error(request, f'Amount should be greater than {coupon.min_amount}')
+                return redirect('cart')
+            
+            cart = Cart.objects.get(session_id = _session_id(request))
+
+            discount_amount = total * coupon.off_percent / 100
+
+            if discount_amount > coupon.max_discount:
+                discount_amount = coupon.max_discount
+
+            subtotal = total
+            total -= discount_amount
+
+            cart.coupon = coupon
+            cart.save()
+                
+        except:
+            messages.error(request, 'Coupon not found')
+            return redirect('cart')
+
     context = {
         'total' : total,
         'quantity' : quantity,
         'cart_items' : cart_items,
         'count': count,
+        'coupons': coupons,
         'cart':cart,
+        'discount_amount':discount_amount,
         'sub_total':subtotal,
     }
 

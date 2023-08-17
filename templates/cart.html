@@ -2,7 +2,68 @@
 {% load static %}
 
 {% block title %}AVF-cart{% endblock title %}
+{% block CSS %}
+<style>
+    /* Your CSS styles go here */
+    .cart-summary {
+        /* Remove the border */
+        padding: 20px;
+    }
 
+    .coupon-input {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-control {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        flex: 1;
+    }
+
+    .apply-button {
+        background-color: #fbb710; /* Change the button color here */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .apply-button:hover {
+        background-color: #131212; /* Change the hover color here */
+    }
+
+    .applied-coupon {
+        color: green;
+        margin-top: 10px;
+    }
+
+    .coupon-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .coupon-list li {
+        border: 1px solid #ccc;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .coupon-code {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .coupon-description {
+        color: #666;
+        margin: 5px 0 0;
+    }
+</style>
+{% endblock CSS %}
 {% block content %}
 <div class="cart-table-area section-padding-100">
     <div class="container-fluid">
@@ -87,6 +148,31 @@
                     <div class="cart-btn mt-100">
                         <a href="{% url 'checkout' %}" class="btn amado-btn w-100">Checkout</a>
                     </div>
+                </div>
+                <div class="cart-summary" style="margin-top: 10px;">
+                    <h5 class="agileits-sear-head">Apply Coupon</h5>
+                    <form action="{% url 'cart' %}" method="post">
+                        {% csrf_token %}
+                        <div class="coupon-input">
+                            <input class="form-control" type="search" name="search" placeholder="Enter coupon code..." required="">
+                            <button class="apply-button" type="submit">
+                                Apply
+                            </button>
+                        </div>
+                    </form>
+                
+                    <h5 class="agileits-sear-head">Available Coupons</h5>
+                    {% if cart.coupon %}
+                    <p class="applied-coupon">Coupon "{{ cart.coupon.coupon_code }}" applied.</p>
+                    {% endif %}
+                    <ul class="coupon-list">
+                        {% for coupon in coupons %}
+                        <li>
+                            <div class="coupon-code">{{ coupon.coupon_code }}</div>
+                            <p class="coupon-description">Save {{ coupon.off_percent }}% on your cart total</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

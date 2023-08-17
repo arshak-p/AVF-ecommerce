@@ -152,10 +152,35 @@
                         <!-- Product Meta Data -->
                         <div class="product-meta-data">
                             <div class="line"></div>
-                            <p class="product-price">&#8377;{{ product.price}}</p>
-                            <a href="{% url 'product_details' product.id %}">
-                                <h6>{{ product.product_name}}</h6>
-                            </a>
+                        
+                            {% if product.offer %}
+                                <p class="product-price">
+                                    
+                                    &#8377;{{ product.get_offer_price }}
+                                    <del>&#8377;{{ product.price }}</del>
+                                    <span style="color: red;">({{ product.offer.off_percent }}% off)</span>
+                                </p>
+                                <a href="{% url 'product_details' product.id %}">
+                                    <h6>{{ product.product_name }}</h6>
+                                </a>
+                                
+                            {% elif product.category.offer %}
+                                <p class="product-price">
+                                    &#8377;{{ product.get_offer_price_by_category }}
+                                    <del>&#8377;{{ product.price }}</del>
+                                    <span style="color: red;">({{ product.category.offer.off_percent }}% off)</span>
+                                    
+                                </p>
+                                <a href="{% url 'product_details' product.id %}">
+                                    <h6>{{ product.product_name }}</h6>
+                                </a>
+                                
+                            {% else %}
+                                <p class="product-price">&#8377;{{ product.price }}</p>
+                                <a href="{% url 'product_details' product.id %}">
+                                    <h6>{{ product.product_name }}</h6>
+                                </a>
+                            {% endif %}
                         </div>
                         <!-- Ratings & Cart -->
                         <div class="ratings-cart text-right">

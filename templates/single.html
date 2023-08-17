@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block CSS %}
 <style>
+
     * {box-sizing: border-box;}
     
     .img-zoom-container {
@@ -32,6 +33,21 @@
     
     
     </style>
+    <style>
+        .product-price {
+          font-size: 14px; /* Adjust the font size for the regular price */
+          color: #777; /* Color for the regular price */
+        }
+        
+        .offer-price {
+          font-size: 12px; /* Adjust the font size for the offer price */
+          color: orange; /* Orange color for the offer price */
+          text-decoration: line-through; /* Add a crossed-out line */
+        }
+        </style>
+    
+        
+    
     {% endblock CSS %}
    
 {% block title %}AVF-product details{% endblock title %}
@@ -87,8 +103,18 @@
                     <!-- Product Meta Data -->
                     <div class="product-meta-data">
                         <div class="line"></div>
-                        
-                        <p class="product-price">&#8377;{{single_product.price}}</p>
+                        {% if single_product.offer %}
+                        <p class="product-price original-price d-flex">&#8377;<span class="original-price-value">{{ single_product.get_offer_price }}</span><span class="offer-price m-2">&#8377;{{ single_product.price}}</span></p>
+                        <span style="color: red;">({{single_product.offer.off_percent}}% off)</span>
+                        {% elif single_product.category.offer %}
+                            <p class="product-price original-price">&#8377;<span class="original-price-value">{{single_product.get_offer_price_by_category }}</span><span class="offer-price m-2">&#8377;{{ single_product.price}}</span></p>
+                          
+                            
+                            <span style="color: red;">({{single_product.category.offer.off_percent}}% off)</span>
+                        {% else %}
+                            <p class="product-price">&#8377;{{ single_product.price }}</p>
+                        {% endif %}
+
                         <a href="product-details.html">
                             <h6>{{single_product.product_name }}</h6>
                         </a>

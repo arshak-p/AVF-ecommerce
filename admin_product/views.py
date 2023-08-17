@@ -5,6 +5,7 @@ from category.models import Category
 from admin_panel.views import super_admincheck
 from category.models import *
 from django.contrib.auth.decorators import login_required, user_passes_test
+from offers.models import Offer
 # Create your views here.
 
 @login_required
@@ -42,7 +43,9 @@ def add_product(request):
         description = request.POST['desc']
         price = request.POST['price']
         stock = request.POST['stock']
+        offer = request.POST['offer']
         images = request.FILES.getlist('images')
+        
 
         try:
             Product.objects.get(product_name = name)
@@ -56,6 +59,9 @@ def add_product(request):
                         pass    
                 brand_instance = Brand.objects.get(id=brand)
                 category_instance = Category.objects.get(id=category)
+                offer_instance = None
+                if offer:
+                    offer_instance = Offer.objects.get(id=offer)
 
                 Product.objects.create(
                     product_name=name,
@@ -65,6 +71,7 @@ def add_product(request):
                     price=price,
                     stock=stock,
                     images=image,
+                    offer=offer_instance,
                     
                 ).save()
                 product = Product.objects.get(product_name = name)
@@ -80,10 +87,12 @@ def add_product(request):
 
     brands = Brand.objects.all()
     categories = Category.objects.all()
+    offers = Offer.objects.all()
 
     context = {
         'categories' : categories,
         'brands' : brands,
+        'offers' : offers,
     }
     return render(request, 'adminpanel/page-form-product-1.html', context)
 
@@ -112,10 +121,15 @@ def edit_product(request, id):
         category = request.POST['category']
         price = request.POST['price']
         stock = request.POST['stock']
+        offer = request.POST['offer']
 
         if name == '':
             messages.error(request,"Product name can't be null")
             return redirect(edit_product)
+        
+        offer_instance = None
+        if offer:
+            offer_instance = Offer.objects.get(id=offer)
 
         
         brand_instance = Brand.objects.get(id=brand)
@@ -129,7 +143,7 @@ def edit_product(request, id):
           
             stock=stock,
             price=price,
-            
+            offer=offer_instance,
             
         )
 
@@ -138,6 +152,7 @@ def edit_product(request, id):
         messages.success(request,f'{name} updated successfully')
         return redirect(products)
     
+    offers = Offer.objects.all()
     product = Product.objects.get(id=id)
     brands = Brand.objects.all()
     categories = Category.objects.all()
@@ -146,6 +161,7 @@ def edit_product(request, id):
         "product": product,
         'categories' : categories,
         'brands' : brands,
+        'offers' : offers,
     }
 
     return render(request, "adminpanel/product-update.html", context)
@@ -179,7 +195,9 @@ def add_category(request):
             
         name = request.POST['name']
         description = request.POST['desc']
+        offer = request.POST['offer']
         check = [name]
+        
         is_available = request.POST.get('is_available', False)        
         if is_available:
             is_available = True
@@ -191,10 +209,13 @@ def add_category(request):
                 return redirect(add_category)
             else:
                 pass
+        offer_instance = None
+        if offer:
+            offer_instance = Offer.objects.get(id=offer)
         try:
             Category.objects.get(category_name = name)
         except:
-            Category.objects.create(category_name=name,cat_image=image,category_decs=description,).save()
+            Category.objects.create(category_name=name,cat_image=image,category_decs=description,offfer=offer_instance).save()
             messages.success(request,f'Category "{name}" succesfully added')
         else:
             messages.error(request,f'Category "{name}" already exist')
@@ -202,13 +223,13 @@ def add_category(request):
     if not request.user.is_authenticated and not request.user.is_superuser:
         return redirect('admin_dashboard')
     
+    offers = Offer.objects.all()
     categories = Category.objects.all()
     context = {
 
         'categories': categories,
-        
+        'offers': offers,
     }
-
     return render(request, 'adminpanel/page-categories.html', context)
 @login_required(login_url='admin_login')
 def edit_category(request, id):
@@ -217,17 +238,25 @@ def edit_category(request, id):
     if request.method == "POST":
         name = request.POST['name']
         description = request.POST['desc']
+        offer = request.POST['offer']
+
+        offer_instance = None
+        if offer:
+            offer_instance = Offer.objects.get(id=offer)
 
         category = Category.objects.filter(id=id).update(
             category_name=name,
             category_decs=description,
+            offer=offer_instance,
         )
         messages.success(request,f'{name} updated successfully')
         return redirect(add_category)
 
     category = Category.objects.get(id=id)
+    offers = Offer.objects.all()
     context = {
         'category' : category,
+        'offers':offers,
     }
     return render(request, "adminpanel/update-category.html", context)
 

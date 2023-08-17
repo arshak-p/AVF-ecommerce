@@ -105,6 +105,8 @@ def place_order(request):
             if cart_item.quantity > cart_item.product.stock:
                 print("cart item out of stock")
                 return redirect('cart')
+            if cart_item.product.offer:
+                total += cart_item.sub_total_with_offer()
             elif cart_item.product.category.offer:
                 total += cart_item.sub_total_with_offer_category()
             else:
@@ -205,8 +207,12 @@ def success(request, total = 0):
         cart_items = CartItem.objects.filter(user=request.user)
         for cart_item in cart_items:
             product_price = 0
-            # ********
-            product_price = cart_item.product.price
+            if cart_item.product.offer:
+                product_price = cart_item.product.get_offer_price()
+            elif cart_item.product.category.offer:
+                product_price = cart_item.product.get_offer_price_by_category()
+            else:
+                product_price = cart_item.product.price
             orderitem = OrderItem(
                 user = request.user,
                 order = order,
@@ -248,7 +254,7 @@ def success(request, total = 0):
             'order' : order,
             'orderitems' : orderitems,
             'total' : total,
-            # *****
+            'pretotal':pretotal,
             
         }
         return render(request, 'invoice.html', context)
