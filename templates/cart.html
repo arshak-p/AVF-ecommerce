@@ -96,7 +96,13 @@
                                     <h5>{{ cart_item.product.product_name }}</h5>
                                 </td>
                                 <td class="price">
-                                    <span>&#8377;{{ cart_item.product.price}}</span>
+                                    {% if cart_item.product.offer %}
+                                        <span>&#8377;{{ cart_item.sub_total_with_offer }}</span>
+                                    {% elif cart_item.product.category.offer %}
+                                        <span>&#8377;{{ cart_item.sub_total_with_offer_category }}</span>
+                                    {% else %}
+                                        <span>&#8377;{{ cart_item.product.price }}</span>
+                                    {% endif %}
                                 </td>
                                 <td class="qty">
                                     <div class="qty-btn d-flex">
@@ -163,7 +169,7 @@
                 
                     <h5 class="agileits-sear-head">Available Coupons</h5>
                     {% if cart.coupon %}
-                    <p class="applied-coupon">Coupon "{{ cart.coupon.coupon_code }}" applied.</p>
+                    <p class="applied-coupon" style="color: green;">Coupon "{{ cart.coupon.coupon_code }}" applied.</p>
                     {% endif %}
                     <ul class="coupon-list">
                         {% for coupon in coupons %}

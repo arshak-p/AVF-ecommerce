@@ -54,6 +54,15 @@
                       required
                     />
                   </div>
+                  <div class="col-sm-6 mb-3">
+                    <label class="form-label">Offer</label>
+                    <select class="form-select" name="offer">
+                      <option {% if category.offer %}value="{{ category.offer.id }}"{% else %} value=""{%endif%}>{% if category.offer %}{{ category.offer.name }}{% else %}-----{%endif%}</option>
+                      {% for offer in offers %}
+                      <option value="{{ offer.id }}">{{ offer.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
                   <div class="d-grid">
                     <button class="btn btn-primary" type="submit">Update category</button>
                   </div>
