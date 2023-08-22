@@ -3,6 +3,7 @@ from store.models import Product
 from django.contrib import messages
 from offers.models import Coupon
 from .models import Cart,CartItem
+from django.http import JsonResponse
 # Create your views here.
 
 def _session_id(request):
@@ -162,3 +163,4 @@ def cart(request, total=0, quantity=0, cart_items=None,count=0,coupons=None, car
     }
 
     return render(request, "cart.html", context)
+

@@ -67,8 +67,8 @@
                 <div class="breadcrumb-content position-relative section-content">
                     <h3 class="title-3">checkout</h3>
                     <ul>
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li></li>
+                        <li><a href="{% url 'index' %}"> Home </a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -107,7 +107,7 @@
 			<select class="custom-select" name = "address">
 				{% for address in addresses %}
 				<option value="{{ address.id }}">{{ address }},
-					<br>{{ address.house_name }}</option>
+					<br>{{ address.house_name }},{{address.landmark}},{{address.city}},{{address.district}},{{address.contact_number}}</option>
 				{% endfor %}
 			</select>
 		

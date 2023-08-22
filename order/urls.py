@@ -8,5 +8,6 @@ urlpatterns = [
     path('cancelorder/<int:id>',views.cancel_orders, name='cancelorder'),
     path('invoice/<int:id>',views.invoice, name='invoice'),
     path('presuccess/',views.pre_success, name='presuccess'),
-    path('success/',views.success, name='success')
+    path('success/',views.success, name='success'),
+    path('wallet-payments/', views.walletpayments, name='wallet_payments')
 ]

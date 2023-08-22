@@ -5,6 +5,21 @@
 
 {% block content %}
 <style>
+    .price-filter button {
+        background-color: orange;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .price-filter button:hover {
+        background-color: black;
+        color: orange;
+    }
+</style>
+<style>
     .fav-nav-button {
         border: none;
         background: none;
@@ -56,43 +71,22 @@
         <br>
         <input class="btn btn-dark" type="submit" value="Apply Filters">
     </form>
-    
+    <br>
+    <form action="{% url 'filtered_products' %}" method="GET">
+        <div class="price-filter">
+            <label for="min_price">Min Price:</label>
+            <input type="number" name="min_price" id="min_price" step="0.01" >
+            <br>
+            <br>
+            <label for="max_price">Max Price:</label>
+            <input type="number" name="max_price" id="max_price" step="0.01">
+            <br>
+            <br>
 
-    <!-- ##### Single Widget ##### -->
-    {% comment %} <div class="widget color mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Color</h6>
-
-        <div class="widget-desc">
-            <ul class="d-flex">
-                <li><a href="#" class="color1"></a></li>
-                <li><a href="#" class="color2"></a></li>
-                <li><a href="#" class="color3"></a></li>
-                <li><a href="#" class="color4"></a></li>
-                <li><a href="#" class="color5"></a></li>
-                <li><a href="#" class="color6"></a></li>
-                <li><a href="#" class="color7"></a></li>
-                <li><a href="#" class="color8"></a></li>
-            </ul>
+            <button type="submit" class="rounded">Apply</button>
         </div>
-    </div> {% endcomment %}
-
-    <!-- ##### Single Widget ##### -->
-    {% comment %} <div class="widget price mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30 mt-3" >Price</h6>
-
-        <div class="widget-desc">
-            <div class="slider-range">
-                <div data-min="10" data-max="1000" data-unit="$" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="10" data-value-max="1000" data-label-result="">
-                    <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                </div>
-                <div class="range-price">$1000 - $10000</div>
-            </div>
-        </div>
-    </div> {% endcomment %}
+    </form>
+   
 </div>
 
 <div class="amado_product_area section-padding-100">
@@ -184,14 +178,14 @@
                         </div>
                         <!-- Ratings & Cart -->
                         <div class="ratings-cart text-right">
-                            <div class="ratings">
+                            {% comment %} <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                            {% comment %} <div class="fav-nav">
+                            </div> 
+                             <div class="fav-nav">
                                 <a href="#" class="fav-nav-button" data-toggle="tooltip" data-placement="left" title="Add to Favourite">
                                     <img src="/static/assets/img/core-img/favorites.png" alt="">
                                 </a>

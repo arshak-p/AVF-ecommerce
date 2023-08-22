@@ -123,8 +123,12 @@ type="text/css"
                                
                           </td>
                           <td class="invert">{{ item.product.product_name }}</td>
-  
+
+                          {% comment %} {% if order.coupon_discount %}
+                          <td class="invert">{{ item.total }}</td>
+                          {% else %} {% endcomment %}
                           <td class="invert">{{ item.sub_total }}</td>
+                          {% comment %} {% endif %} {% endcomment %}
                           <td class="invert">{{ item.status }}</td>
                           <td class="invert p-3">
                               <div class="rem">

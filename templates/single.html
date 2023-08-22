@@ -118,21 +118,36 @@
                         <a href="product-details.html">
                             <h6>{{single_product.product_name }}</h6>
                         </a>
+
+                        {% if messages%} {% for message in messages%}
+                            <div
+                            class="alert alert-warning alert-dismissible fade show"
+                            role="alert"
+                            >
+                            <strong></strong>{{message}}
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
+                            </div>
+                            {%endfor%} {%endif%}
                         <!-- Ratings & Review -->
                         <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
-                            <div class="ratings">
+                            {% comment %} <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                            <div class="review">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="review">
                                 <a href="#">Write A Review</a>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                         <!-- Avaiable -->
-                        <p class="avaibility"><i class="fa fa-circle"></i> In Stock</p>
+                        {% comment %} <p class="avaibility"><i class="fa fa-circle"></i> In Stock</p> {% endcomment %}
                     </div>
 
                     <div class="short_overview my-5">
@@ -173,7 +188,7 @@
 
 <script>
     function showContent() {
-        document.getElementById('myresult').style.display = 'block'
+        docuxnt.getElementById('myresult').style.display = 'block'
     }
     function hideContent() {
         document.getElementById('myresult').style.display = 'none'

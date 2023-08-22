@@ -190,6 +190,115 @@
 										<div class="clearfix"></div>
 									</div>
 								</div>
+								{% comment %} ____    wallet {% endcomment %}
+								<div class="tab1">
+
+									{% comment %} <div class="pay_info">
+
+
+											<h3>Billing address</h3>
+											<br>
+											<p>{{ order.address.fullname }},<p>
+											<p>{{ order.address.house_name}},{{order.address.landmark}}</P>
+											<p>{{ order.address.city}},{{order.address.district}}</P>
+											<p>{{ order.address.state}},{{order.address.country}}</P>
+											<p>ph_no:{{ order.address.contact_number}}, Pincode:{{order.address.pincode}}</P>
+												<br>
+												<div class="balance">
+													Wallet Balance: &#8377;{{ wallet.balance }}
+												</div>
+												<br>
+												{% if wallet.balance > total %}
+												<div>
+													<a href="#"><button class="btn  btn-dark font-weight-bold my-3 mx-3">Confirm Order</button></a>
+												</div>
+												{% else %}
+												<div>
+													<h5>Your wallet don't have enough balance</h5>
+												</div>
+												{% endif %}
+
+										
+											
+										
+									</div> {% endcomment %}
+									<div class="pay_info row">
+										<div class="col-md-6 tab-grid">
+											<h3>Billing address</h3>
+											<br>
+											<p>{{ order.address.fullname }},<p>
+											<p>{{ order.address.house_name}},{{order.address.landmark}}</P>
+											<p>{{ order.address.city}},{{order.address.district}}</P>
+											<p>{{ order.address.state}},{{order.address.country}}</P>
+											<p>ph_no:{{ order.address.contact_number}}, Pincode:{{order.address.pincode}}</P>
+												<br>
+												<div class="balance">
+													Wallet Balance: &#8377;{{ wallet.balance }}
+												</div>
+												<br>
+												{% if wallet.balance > total %}
+												<div>
+													<a href="{% url 'wallet_payments' %}"><button class="btn  btn-dark font-weight-bold my-3 mx-3">Confirm Order</button></a>
+												</div>
+												{% else %}
+												<div>
+													<h5>Your wallet don't have enough balance</h5>
+												</div>
+												{% endif %}
+
+											
+											
+										</div>
+										<div class="col-md-6">
+										<div class="checkout-left row">
+										<div class="col-md-10 checkout-left-basket " >
+											
+											
+											<br>
+											<br>
+											<ul style="border: 1px solid black dashed;">
+												{% for cart_item in cart_items %}
+												
+												
+												<li>{{ cart_item.product.product_name }}
+													<i>-</i>
+													
+													{% if cart_item.product.offer %}
+													<span style="color: black;"><del>{{ cart_item.sub_total }}</del> &#8377; {{ cart_item.sub_total_with_offer }}</span>
+													{% elif cart_item.product.category.offer %}
+													<span style="color: black;"><del>{{ cart_item.sub_total }}</del> &#8377; {{ cart_item.sub_total_with_offer_category }}</span>
+													{% else %}
+													<span style="color: black;">&#8377; {{ cart_item.sub_total }}</span>
+													{% endif %}
+												</li>
+												{% endfor %}
+												{% if discount_amount %}
+												<li>Coupon discount
+													<i>-</i>
+													<span style="color: red;">- &#8377;{{ discount_amount }}</span>
+												</li>{%endif%}
+							
+												<li>Total Service Charges
+													<i>-</i>
+													<span>Free Delivery <del>99</del> </span>
+												</li>
+												<li style="font-size: 1em;
+												color: #212121;
+												font-weight: 600;
+												padding: 1em 0;
+												border-top: 1px solid #DDD;
+												border-bottom: 1px solid #DDD;
+												margin: 2em 0 0;"><b>Total</b>
+													<i>-</i>
+													<span><b>&#8377;{{ total }}</b></span>
+												</li>
+											</ul>
+											
+										</div>
+									</div>
+									</div>
+
+								</div>
 							</div>
 						</div>
 					</div>
