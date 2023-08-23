@@ -5,6 +5,18 @@
 
 {% block content %}
 <style>
+    .btn-apply {
+        background-color: orange;
+        color: white;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-apply:hover {
+        background-color: black;
+        color: white;
+    }
+</style>
+<style>
     .price-filter button {
         background-color: orange;
         color: white;
@@ -16,7 +28,7 @@
 
     .price-filter button:hover {
         background-color: black;
-        color: orange;
+        color: white;
     }
 </style>
 <style>
@@ -57,11 +69,10 @@
         <!-- Brands -->
         <div class="left-side">
             <h6 class="widget brands mb-50">Brands</h6>
-
+    
             <ul>
                 {% for i in brand %}
                 <li class="m-4">
-                    
                     <input class="form-check-input" type="checkbox" name="brand" value="{{ i.id }}" class="checked">
                     <label class="form-check-label" for="brand_{{ i.id }}">{{ i.brand_name }}</label>
                 </li>
@@ -69,23 +80,25 @@
             </ul>
         </div>
         <br>
-        <input class="btn btn-dark" type="submit" value="Apply Filters">
+        <input class="btn btn-dark btn-apply" type="submit" value="Apply Filters">
     </form>
+    
     <br>
     <form action="{% url 'filtered_products' %}" method="GET">
         <div class="price-filter">
             <label for="min_price">Min Price:</label>
-            <input type="number" name="min_price" id="min_price" step="0.01" >
+            <input type="number" name="min_price" id="min_price" step="0.01" placeholder="">
             <br>
             <br>
             <label for="max_price">Max Price:</label>
-            <input type="number" name="max_price" id="max_price" step="0.01">
+            <input type="number" name="max_price" id="max_price" step="0.01" placeholder="">
             <br>
             <br>
-
+    
             <button type="submit" class="rounded">Apply</button>
         </div>
     </form>
+    
    
 </div>
 
@@ -246,3 +259,27 @@
 <!-- ##### Main Content Wrapper End ##### -->
 
 {% endblock content %}
+{% block java %}
+<script>
+    // Get the URL parameters from the query string
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const minPriceInput = document.getElementById('min_price');
+    const maxPriceInput = document.getElementById('max_price');
+
+    // Get the values of 'min_price' and 'max_price' from URL parameters
+    const minPrice = urlParams.get('min_price');
+    const maxPrice = urlParams.get('max_price');
+
+    // Set input values and placeholders based on URL parameters
+    if (minPrice) {
+        
+        minPriceInput.placeholder = `${minPrice}`;
+    }
+
+    if (maxPrice) {
+        
+        maxPriceInput.placeholder = `${maxPrice}`;
+    }
+</script>
+{% endblock java %}

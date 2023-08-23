@@ -52,6 +52,7 @@ class Order(models.Model):
     order_total = models.FloatField
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
+    coupon = models.ForeignKey('offers.Coupon', on_delete=models.SET_NULL,null=True, blank=True)
     coupon_discount = models.BigIntegerField(null=True,blank=True)
 
     def __str__(self) -> str:

@@ -112,13 +112,6 @@ def place_order(request):
             else:
                 total += cart_item.sub_total()
         cart = Cart.objects.get(session_id=_session_id(request))
-        if cart.coupon:
-            discount_amount = total * cart.coupon.off_percent / 100
-
-            if discount_amount > cart.coupon.max_discount:
-                discount_amount = cart.coupon.max_discount
-
-            total -= discount_amount
 
         if cart_count <= 0:
             return redirect('shop')
@@ -134,8 +127,15 @@ def place_order(request):
         data.user = current_user
         data.address = address
         data.order_total = total
-        data.coupon_discount = discount_amount
+        if cart.coupon:
+            discount_amount = total * cart.coupon.off_percent / 100
+            if discount_amount > cart.coupon.max_discount:
+                discount_amount = cart.coupon.max_discount
+            total -= discount_amount
+            data.coupon_discount = discount_amount
+            data.coupon = cart.coupon
         data.save()
+
         order = Order.objects.get(
             user=current_user, status=data.status, order_id=data.order_id)
 
@@ -166,23 +166,67 @@ def my_orders(request):
     return render(request, 'myorders.html', context)
 
 
+
+
+
 @login_required(login_url='handlelogin')
 def cancel_orders(request, id):
-
     item = OrderItem.objects.get(id=id)
-    item.status = 'cancelled'
-    quantity = item.quantity
-    item.product.stock += quantity
-    item.save()
+    print('Paymetn Method ===>> ', item.order.payment.payment_method)
+    print('Paymetn Method ===>> ', item.order.coupon)
+    if(item.order.payment.payment_method != 'cash on delivery' and item.order.coupon):
+        item.status = 'cancelled'
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.save()
 
-    wallet, _ = Wallet.objects.get_or_create(user=request.user)
-    amount = Decimal(item.sub_total())
-    wallet.balance += amount
-    wallet.save()
+        OrderItems = OrderItem.objects.filter(order=item.order)
+        minPurchaseAmount =  item.order.coupon.min_amount
+        total = 0
+        for order_item in OrderItems:
+            if order_item.status != 'cancelled':
+                total+=order_item.sub_total()
+        
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
+        cancelled_amount = item.sub_total()
 
-    description = 'Cancelled order'
-    wallet_transaction = WalletTransaction.objects.create(
-        wallet=wallet, description=description, type='Credit', amount=amount)
+        if(minPurchaseAmount>total):
+            print('Order total ---> ',total)
+            print('cancelled amount --> ',cancelled_amount)
+            discount_price = item.order.coupon_discount
+            print('discount price --> ',discount_price)
+            if(discount_price>cancelled_amount):
+                discount_percentage = (cancelled_amount/ total)
+                print('discount_percentage ---> ',discount_percentage)
+                deducting_amount = discount_percentage * discount_price
+                print('deducting amount (from if) --> ',deducting_amount)
+            else:
+                deducting_amount = discount_price
+                print('deducting amount (from else)--> ',deducting_amount)
+            amount = cancelled_amount - deducting_amount
+            wallet.balance += Decimal(amount)
+            wallet.save()
+            description = f'Cancel Order -> {cancelled_amount} - {deducting_amount}'
+            wallet_transaction = WalletTransaction.objects.create(
+                wallet=wallet, description=description, 
+                type='Credit', 
+                amount=round(amount)
+            )
+        else:
+            amount = Decimal(cancelled_amount)
+            wallet.balance += amount
+            wallet.save()
+            description = 'Cancelled order'
+            wallet_transaction = WalletTransaction.objects.create(
+                wallet=wallet, description=description, 
+                type='Credit', 
+                amount=round(amount)
+            )
+    else:
+        print('Something went wrooooooooooooooooooooooongggg !!!! ')
+        return redirect(my_orders)
+
+    
 
     current_user = request.user
     subject = "Cancell order succesfull!"

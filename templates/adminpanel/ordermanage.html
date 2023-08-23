@@ -17,6 +17,10 @@
                 <div>
                 <button class="btn btn-success"><a href="{% url 'invoice' cart_item.id %}" style="color:black; text-decoration:none;">View Invoice</a></button>
                 </div>
+                {% if cart_item.status == 'cancelled' %} 
+                <label class="form-label">{{ cart_item.status }}</label>
+
+                {% else %}
                 <form method="POST" action="{% url 'ordermanage' cart_item.id %}">
                     {% csrf_token %}
                     <h3 class="p-3">Change status of the Order</h3>
@@ -32,8 +36,11 @@
                         <button class="btn btn-md rounded font-sm hover-up my-3" type="submit">
                             Update
                         </button>
+                        
                       </div>
-                </form>    
+                </form>
+
+                {% endif %}   
               </div>
 
 
