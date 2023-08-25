@@ -11,6 +11,7 @@ from cart.views import _session_id
 from django.contrib.auth.decorators import login_required
 import razorpay
 from decimal import Decimal
+from django.contrib import messages
 
 # Create your views here.
 
@@ -210,6 +211,7 @@ def cancel_orders(request, id):
                 amount=round(amount)
             )
         else:
+            print('===========================')
             amount = Decimal(cancelled_amount)
             wallet.balance += amount
             wallet.save()
@@ -219,7 +221,25 @@ def cancel_orders(request, id):
                 type='Credit', 
                 amount=round(amount)
             )
-            # _________________________new
+            messages.success(request, 'Amount credited in your wallet')
+    elif item.order.payment.payment_method != 'cash on delivery' :
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.status = 'cancelled'
+        item.save()
+
+        amount = Decimal(item.product_price)
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
+        wallet.balance += amount
+        wallet.save()
+        description = 'Cancelled order'
+        wallet_transaction = WalletTransaction.objects.create(
+            wallet=wallet, description=description, 
+            type='Credit', 
+            amount=round(amount)
+        )
+        messages.success(request, 'Amount credited in your wallet')
+    
     else:
         item.status = 'cancelled'
         quantity = item.quantity
@@ -232,6 +252,100 @@ def cancel_orders(request, id):
     current_user = request.user
     subject = "Cancell order succesfull!"
     mess = f'Greetings {current_user.first_name}.\nYour Order {item.order.order_id} has been cancelled. \nThank you for shopping with us!'
+    send_mail(
+        subject,
+        mess,
+        settings.EMAIL_HOST_USER,
+        [current_user.email],
+        fail_silently=False
+    )
+    return redirect(my_orders)
+
+
+# retun order
+@login_required(login_url='handlelogin')
+def return_order(request, id):
+    item = OrderItem.objects.get(id=id)
+    if(item.order.payment.payment_method != 'cash on delivery' and item.order.coupon):
+        item.status = 'returned'
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.save()
+
+        OrderItems = OrderItem.objects.filter(order=item.order)
+        minPurchaseAmount =  item.order.coupon.min_amount
+        total = 0
+        for order_item in OrderItems:
+            if order_item.status != 'returned':
+                total+=order_item.sub_total()
+        
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
+        returned_amount = item.sub_total()
+
+        if(minPurchaseAmount>total):
+            
+            discount_price = item.order.coupon_discount
+            print('discount price --> ',discount_price)
+            if(discount_price>returned_amount):
+                discount_percentage = (returned_amount/ total)
+                print('discount_percentage ---> ',discount_percentage)
+                deducting_amount = discount_percentage * discount_price
+                print('deducting amount (from if) --> ',deducting_amount)
+            else:
+                deducting_amount = discount_price
+                print('deducting amount (from else)--> ',deducting_amount)
+            amount = returned_amount - deducting_amount
+            wallet.balance += Decimal(amount)
+            wallet.save()
+            description = f'Return Order -> {returned_amount} - {deducting_amount}'
+            wallet_transaction = WalletTransaction.objects.create(
+                wallet=wallet, description=description, 
+                type='Credit', 
+                amount=round(amount)
+            )
+        else:
+            amount = Decimal(returned_amount)
+            wallet.balance += amount
+            wallet.save()
+            description = 'returned order'
+            wallet_transaction = WalletTransaction.objects.create(
+                wallet=wallet, description=description, 
+                type='Credit', 
+                amount=round(amount)
+            )
+           
+            messages.success(request, 'Amount credited in your wallet')
+    
+    elif item.order.payment.payment_method != 'cash on delivery' :
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.status = 'returned'
+        item.save()
+
+        amount = Decimal(item.product_price)
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
+        wallet.balance += amount
+        wallet.save()
+        description = 'returned order'
+        wallet_transaction = WalletTransaction.objects.create(
+            wallet=wallet, description=description, 
+            type='Credit', 
+            amount=round(amount)
+        )
+        messages.success(request, 'Amount credited in your wallet')
+
+    else:
+        item.status = 'returned'
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.save()
+        
+
+    
+
+    current_user = request.user
+    subject = "returned order succesfull!"
+    mess = f'Greetings {current_user.first_name}.\nYour Order {item.order.order_id} has been returned. \nThank you for shopping with us!'
     send_mail(
         subject,
         mess,
@@ -415,6 +529,7 @@ def walletpayments(request, total=0, pretotal=0):
             description = 'Product purchased'
             wallet_transaction = WalletTransaction.objects.create(
             wallet=wallet, description=description, type='Debit', amount=total)
+            messages.success(request, 'Amount Debited in your wallet')
 
             context = {
                 'order': order,

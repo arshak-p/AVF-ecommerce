@@ -38,6 +38,7 @@ def add_wishlist(request, id):
 
 @login_required(login_url='handlelogin')
 def delete_wishlist(request, id):
+    messages.warning(request, "Item removerd in favourite!")
     usr = request.user.id
     product = Wishlist.objects.get(user=usr, product=id)
     product.delete()

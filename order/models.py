@@ -67,6 +67,7 @@ class OrderItem(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
         ('refunded', 'Refunded'),
+        ('returned', 'Returned'),
     ]
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True)
