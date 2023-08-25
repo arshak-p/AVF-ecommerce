@@ -45,6 +45,15 @@
 
     <!-- ##### Main Content Wrapper Start ##### -->
     <div class="main-content-wrapper d-flex clearfix">
+        {% csrf_token %}
+                      {% if messages%}
+              {% for message in messages%}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong></strong>{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {%endfor%}
+              {%endif%}
 
         <!-- Mobile Nav (max width 767px)-->
         <div class="mobile-nav">

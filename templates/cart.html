@@ -192,6 +192,7 @@
                 </div>
                 <div class="cart-summary" style="margin-top: 10px;">
                     <h5 class="agileits-sear-head">Apply Coupon</h5>
+                    <br>
                     <form action="{% url 'cart' %}" method="post">
                         {% csrf_token %}
                         <div class="coupon-input">
@@ -201,8 +202,9 @@
                             </button>
                         </div>
                     </form>
-                
+                    <br>
                     <h5 class="agileits-sear-head">Available Coupons</h5>
+                    <br>
                     {% if cart.coupon %}
                     <p class="applied-coupon" style="color: green;">Coupon "{{ cart.coupon.coupon_code }}" applied.</p>
                     {% endif %}

@@ -78,9 +78,18 @@
 </html>
 
 
-
+{% csrf_token %}
+                      {% if messages%}
+              {% for message in messages%}
+              <div class="alert alert-warning alert-dismissible fade show d-print-none" role="alert">
+                <strong></strong>{{message}}
+                <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {%endfor%}
+              {%endif%}
 
 <div class="d-print-none p-5" style="display:flex; justify-content:center;">
+    
     {% if not f %} <h1>Order Confirmed</h1> {% endif %}
  </div>
  <div class="container">

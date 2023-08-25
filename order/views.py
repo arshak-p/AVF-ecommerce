@@ -221,7 +221,8 @@ def cancel_orders(request, id):
                 type='Credit', 
                 amount=round(amount)
             )
-            messages.success(request, 'Amount credited in your wallet')
+
+        messages.success(request, 'Amount credited in your wallet')
     elif item.order.payment.payment_method != 'cash on delivery' :
         quantity = item.quantity
         item.product.stock += quantity

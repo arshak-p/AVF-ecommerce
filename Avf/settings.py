@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'wishlist',
     'offers',
     
+    'image_cropping',
     ]
 
 MIDDLEWARE = [
