@@ -172,8 +172,6 @@ def my_orders(request):
 @login_required(login_url='handlelogin')
 def cancel_orders(request, id):
     item = OrderItem.objects.get(id=id)
-    print('Paymetn Method ===>> ', item.order.payment.payment_method)
-    print('Paymetn Method ===>> ', item.order.coupon)
     if(item.order.payment.payment_method != 'cash on delivery' and item.order.coupon):
         item.status = 'cancelled'
         quantity = item.quantity
@@ -191,8 +189,7 @@ def cancel_orders(request, id):
         cancelled_amount = item.sub_total()
 
         if(minPurchaseAmount>total):
-            print('Order total ---> ',total)
-            print('cancelled amount --> ',cancelled_amount)
+            
             discount_price = item.order.coupon_discount
             print('discount price --> ',discount_price)
             if(discount_price>cancelled_amount):
@@ -222,9 +219,13 @@ def cancel_orders(request, id):
                 type='Credit', 
                 amount=round(amount)
             )
+            # _________________________new
     else:
-        print('Something went wrooooooooooooooooooooooongggg !!!! ')
-        return redirect(my_orders)
+        item.status = 'cancelled'
+        quantity = item.quantity
+        item.product.stock += quantity
+        item.save()
+        # return redirect(my_orders)
 
     
 
