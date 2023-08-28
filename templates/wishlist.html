@@ -75,6 +75,8 @@
   rel="stylesheet"
   type="text/css"
     />
+    <!--ajax-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
@@ -192,14 +194,26 @@
                                         {% endif %}
                                         <div class="googles single-item hvr-outline-out">
                                                             
-                                            <button  class="googles-cart pgoogles-cart">
-                                                <a href="{% url 'addcart' item.product.id %}"><i class="fas fa-cart-plus"></i></a>
+                                          
+                            
+                           
+                                                
+                                            <button class="quantity-button increment-btn"
+                                            data-cart-item-id="{{ product.id }}"
+                                            style="background: url('/static/assets/img/core-img/cart.png') no-repeat center center;
+                                                   background-size: contain; padding: 0;
+                                                   border: none; cursor: pointer;
+                                                   height: 25px; width: 25px;
+                                                   outline: none;
+                                                   -webkit-tap-highlight-color: transparent;"
+                                            data-toggle="tooltip" data-placement="left" title="Add to Cart"
+                                            onclick="addToCart('{{ product.id }}');">
                                             </button>
-
+                                            
                                             
                                         
     
-                                    </div>
+                                        </div>
                                     <div>
                                         <a href="{% url 'delete_wishlist' item.product.id %}">
                                             <button class="googles-cart pgoogles-cart" style="font-size: small; color: white;">
@@ -303,3 +317,46 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> <i cl
     </div>
 </footer>
 <!-- ##### Footer Area End ##### -->
+
+    <script>
+
+        $(document).ready(function() {
+            // Increment button click
+            $('.increment-btn').on('click', function(e) {
+                e.preventDefault();
+                var cartItemId = $(this).data('cart-item-id');
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'addcart' 0 %}".replace('0', cartItemId),
+                    success: function(response) {
+                        // Update the quantity label
+                        $('#quantity-label-' + cartItemId).text(response.quantity);
+                        // Update the cart total
+                        $('#cart-total').text(response.cart_total);
+                        // Update the cartitem price
+                        $('#cart-item-price-'+ cartItemId).text('₹' + response.item_price);
+                        Swal.fire({
+                        title: "Success",
+                        text: "item aded to cart!!",
+                        icon: "success",
+                    }); 
+                    },
+                    error: function(response) {
+                    // Use SweetAlert2 to display the error message
+                    Swal.fire({
+                        title: "Error",
+                        text: response.responseJSON.error,
+                        icon: "error",
+                    });
+                    }
+                });
+            });
+    
+            
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
