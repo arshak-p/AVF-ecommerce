@@ -4,6 +4,29 @@
 {% block title %}AVF-cart{% endblock title %}
 {% block CSS %}
 <style>
+    .quantity-button {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        background-color: #f2f2f2;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .quantity-button span {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .quantity-button:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+<style>
     /* Your CSS styles go here */
     .cart-summary {
         /* Remove the border */
@@ -136,14 +159,23 @@
                                         <p>Qty</p>
                                         <div class="quantity">
                                             <div>
-                                                <a  href="{% url 'removecart' cart_item.product.id %}"><span class="qty-minus">
+                                                <!-- <a  href="{% url 'removecart' cart_item.product.id %}"><span class="qty-minus">
                                                     <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </span></a>
+                                                </span></a> -->
                                                 
-                                                <input type="number" class="qty-text" id="qty" step="{{ cart_item.quantity }}" min="{{ count }}" max="300" name="quantity" value="{{ cart_item.quantity }}">
-                                               <a  href="{% url 'addcart' cart_item.product.id %}"> <span class="qty-plus" >
+                                                <a href="#" class="quantity-button decrement-btn" data-cart-item-id="{{ cart_item.product.id }}">
+                                                    <span>-</span> <!-- Minus Icon -->
+                                                  </a>
+                                                  
+                                                  <label id="quantity-label-{{ cart_item.product.id }}">{{ cart_item.quantity }}</label>
+                                                  
+                                                  <a href="#" class="quantity-button increment-btn" data-cart-item-id="{{ cart_item.product.id }}">
+                                                    <span>+</span> <!-- Plus Icon -->
+                                                  </a>
+                                                <!-- <input type="number" class="qty-text" id="qty" step="{{ cart_item.quantity }}" min="{{ count }}" max="300" name="quantity" value="{{ cart_item.quantity }}"> -->
+                                               <!-- <a  href="{% url 'addcart' cart_item.product.id %}"> <span class="qty-plus" >
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </span><a>
+                                                </span><a> -->
                                             </div>
                                             
                                            
@@ -175,15 +207,23 @@
                     <h5>Cart Total</h5>
                     <ul class="summary-table">
                         {% if cart.coupon %}
-                        <li><span>subtotal:</span> <span>&#8377;{{ sub_total }}</span></li>
-                        <li><span>Discount:</span> <span>&#8377;{{ discount_amount }}</span></li>
-                        <li><span>delivery:</span> <span>Free</span></li>
-                        <li><span>total:</span> <span>&#8377;{{ total }}</span></li>
+                        <li><span>subtotal:</span> <span> &#8377; <span>{{ sub_total }}</span> </span> </li>
+                        <li><span>Discount:</span> <span> &#8377; <span>{{ discount_amount }} </span> </span></li>
+                        <li><span>delivery:</span> <span> Free    </span></li>
+                        <li><span>total:</span>    <span> &#8377; <span id="cart_total" >{{ total }} </span></span></li>
                         {% else %}
-                        <li><span>subtotal:</span> <span>&#8377;{{ sub_total }}</span></li>
+                        <li>
+                            <span>subtotal:</span>
+                            <span>
+                                &#8377; 
+                            <span id="cart_sub_total" >
+                                {{ sub_total }}
+                            </span>
+                            </span>
+                        </li>
                         
                         <li><span>delivery:</span> <span>Free</span></li>
-                        <li><span>total:</span> <span>&#8377;{{ total }}</span></li>
+                        <li><span>total:</span> <span> &#8377;<span id="cart_total"  >{{ total }}</span> </span></li>
                         {% endif %}
                     </ul>
                     <div class="cart-btn mt-100">
@@ -248,21 +288,98 @@
         event.preventDefault();
     }
 
-    // Function to add the product to the cart
-    function addCart(productID) {
-        // Implement your logic for adding the product to the cart using the productID
-        // For example, you can make an AJAX request to the server to add the product to the cart.
-        // Replace the following line with your implementation:
-        console.log("Adding product with ID " + productID + " to the cart.");
-    }
+    // // Function to add the product to the cart
+    // function addCart(productID) {
+    //     // Implement your logic for adding the product to the cart using the productID
+    //     // For example, you can make an AJAX request to the server to add the product to the cart.
+    //     // Replace the following line with your implementation:
+    //     console.log("Adding product with ID " + productID + " to the cart.");
+    // }
 
-    // Function to remove the product from the cart
-    function removeCart(productID) {
-        // Implement your logic for removing the product from the cart using the productID
-        // For example, you can make an AJAX request to the server to remove the product from the cart.
-        // Replace the following line with your implementation:
-        console.log("Removing product with ID " + productID + " from the cart.");
-    }
+    // // Function to remove the product from the cart
+    // function removeCart(productID) {
+    //     // Implement your logic for removing the product from the cart using the productID
+    //     // For example, you can make an AJAX request to the server to remove the product from the cart.
+    //     // Replace the following line with your implementation:
+    //     console.log("Removing product with ID " + productID + " from the cart.");
+    // }
+
+
+
+  //ajax for cart increment and derecrement.
+  $(document).ready(function() {
+      // Increment button click
+      $('.increment-btn').on('click', function(e) {
+          e.preventDefault();
+          var cartItemId = $(this).data('cart-item-id');
+          $.ajax({
+              type: "GET",
+              url: "{% url 'addcart' 0 %}".replace('0', cartItemId),
+              success: function(response) {
+                  // Update the quantity label
+                  $('#quantity-label-' + cartItemId).text(response.quantity);
+                  // Update the cart total
+                  $('#cart-total').text(response.cart_total);
+                  // Update the cartitem price
+                  $('#cart-item-price-'+ cartItemId).text('₹' + response.item_price);
+                  document.getElementById('cart_sub_total').innerText = response.subtotal
+                  document.getElementById('cart_total').innerText = response.subtotal
+                  {% comment %} Swal.fire({
+                  title: "Success",
+                  text: "Quantity added!",
+                  icon: "success",
+              });  {% endcomment %}
+              },
+              error: function(response) {
+                // Use SweetAlert2 to display the error message
+                Swal.fire({
+                  title: "Error",
+                  text: response.responseJSON.error,
+                  icon: "error",
+              });
+              }
+          });
+      });
+
+      // Decrement button click
+      $('.decrement-btn').on('click', function(e) {
+          e.preventDefault();
+          var cartItemId = $(this).data('cart-item-id');
+          $.ajax({
+              type: "GET",
+              url: "{% url 'removecart' 0 %}".replace('0', cartItemId),
+              success: function(response) {
+                  // Update the quantity label
+                  console.log(response.quantity,"< ----------------")
+                  $('#quantity-label-' + cartItemId).text(response.quantity);
+                  // Update the cart total
+                  $('#cart-total').text(response.cart_total);
+                  // Update the cartitem price
+                  $('#cart-item-price-'+ cartItemId).text('₹' + response.item_price);
+                  document.getElementById('cart_sub_total').innerText = response.subtotal
+                  document.getElementById('cart_total').innerText = response.subtotal
+
+                  {% comment %} Swal.fire({
+                  title: "Success",
+                  text: "Quantity reduced!",
+                  icon: "success",
+              });  {% endcomment %}
+              },
+              error: function(response) {
+                console.log('err', response);
+                Swal.fire({
+                  title: "Error",
+                  text: response.responseJSON.error,
+                  icon: "error",
+              });
+              }
+          });
+      });
+  });
+
+
+
+
 </script>
 {% endblock java %}
 

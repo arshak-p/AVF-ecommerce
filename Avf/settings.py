@@ -1,3 +1,4 @@
+# from easy_thumbnails.conf import Settings as thumbnail_settings
 """
 Django settings for Avf project.
 
@@ -50,8 +51,8 @@ INSTALLED_APPS = [
     'user_profile',
     'wishlist',
     'offers',
+    # 'image_cropping',
     
-    'image_cropping',
     ]
 
 MIDDLEWARE = [
@@ -147,6 +148,11 @@ STATICFILES_DIRS =[
     os.path.join(BASE_DIR,'static')
 ]
 
+# Add the thumbnail processors configuration
+# THUMBNAIL_PROCESSORS = (
+#     'image_cropping.thumbnail_processors.crop_corners',
+# ) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
 
 #media files configartions
 
@@ -179,3 +185,4 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+

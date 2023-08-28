@@ -83,14 +83,14 @@
                         
                         
                         
-                        <div class="carousel-inner ">
+                        <div class="carousel-inner">
                             {% for image in single_product.product_images.all %}
-                            <div style="position : relative;"  onmouseover="showContent()" onmouseout="hideContent()" class="trigger carousel-item {% if forloop.first %} active {% endif %}"> 
-                                <a class="gallery_img" href="{{image.pr_images.url}}">
-                                    <img class="pq d-block w-100" id="{{image.pr_images.url}}" src="{{image.pr_images.url}}" alt="First slide">
-                                    <div  style="position:absolute;top : 0; right : 0; border : unset" id="myresult-{{image.pr_images.url}}" class="content img-zoom-result"></div>
+                            <div style="position: relative;" onmouseover="showContent{{ forloop.counter }}()" onmouseout="hideContent{{ forloop.counter }}()" class="trigger carousel-item {% if forloop.first %} active {% endif %}">
+                                <a class="gallery_img" href="{{ image.pr_images.url }}">
+                                    <img class="pq d-block w-100" id="img-{{ forloop.counter }}" src="{{ image.pr_images.url }}" alt="Product Image">
+                                    <div style="position: absolute; top: 0; right: 0; border: unset" id="result-{{ forloop.counter }}" class="content img-zoom-result"></div>
+                                </a>
                             </div>
-                            
                             {% endfor %}
                         </div>
                         
@@ -168,9 +168,28 @@
                             {% if single_product.stock <= 0 %}
                                 <h4>out of stock</h4>
                             {% else %}
-                                <a href="{% url 'addcart' single_product.id %}">
+
+                            <button class="quantity-button increment-btn" data-cart-item-id="{{ single_product.id }}"
+                            style="display: inline-block;
+                            min-width: 160px;
+                            height: 55px;
+                            color: #ffffff;
+                            border: none;
+                            border-radius: 0;
+                            padding: 0 7px;
+                            font-size: 18px;
+                            line-height: 56px;
+                            background-color: #fbb710;
+                            font-weight: 400;
+                            cursor:pointer;
+                                   "
+                            onmouseover="this.style.backgroundColor='black';"
+                            onmouseout="this.style.backgroundColor='orange';">
+                            Add to Cart
+                        </button>
+                                {% comment %} <a href="{% url 'addcart' single_product.id %}">
                                     <button name="addtocart" class="btn amado-btn">Add to cart</button>
-                                </a>
+                                </a>  {% endcomment %}
                             {% endif %}
                         </div>
                         
@@ -188,7 +207,6 @@
 
 <script>
     function showContent(resultId) {
-        console.log(resultId)
         document.getElementById(resultId).style.display = 'block';
     }
     
@@ -248,20 +266,54 @@
 
 <script>
     {% for image in single_product.product_images.all %}
-        // Use unique function names for each image
-        function showContent{{ forloop.counter }}() {
-            
-            showContent('myresult-{{ image.pr_images.url }}');
-        }
+    function showContent{{ forloop.counter }}() {
+        showContent('result-{{ forloop.counter }}');
+    }
 
-        function hideContent{{ forloop.counter }}() {
-            hideContent('myresult-{{ image.pr_images.url }}');
-        }
-        
-        imageZoom('{{ image.pr_images.url }}', 'myresult-{{ image.pr_images.url }}');
+    function hideContent{{ forloop.counter }}() {
+        hideContent('result-{{ forloop.counter }}');
+    }
+
+    imageZoom('img-{{ forloop.counter }}', 'result-{{ forloop.counter }}');
     {% endfor %}
 </script>
+<script>
 
+    $(document).ready(function() {
+        // Increment button click
+        $('.increment-btn').on('click', function(e) {
+            e.preventDefault();
+            var cartItemId = $(this).data('cart-item-id');
+            $.ajax({
+                type: "GET",
+                url: "{% url 'addcart' 0 %}".replace('0', cartItemId),
+                success: function(response) {
+                    // Update the quantity label
+                    $('#quantity-label-' + cartItemId).text(response.quantity);
+                    // Update the cart total
+                    $('#cart-total').text(response.cart_total);
+                    // Update the cartitem price
+                    $('#cart-item-price-'+ cartItemId).text('₹' + response.item_price);
+                    Swal.fire({
+                    title: "Success",
+                    text: "item aded to cart!!",
+                    icon: "success",
+                }); 
+                },
+                error: function(response) {
+                  // Use SweetAlert2 to display the error message
+                  Swal.fire({
+                    title: "Error",
+                    text: response.responseJSON.error,
+                    icon: "error",
+                });
+                }
+            });
+        });
+  
+        
+    });
 
+</script>
 
 {% endblock java %}
