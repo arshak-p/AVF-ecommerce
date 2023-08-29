@@ -215,7 +215,7 @@ def add_category(request):
         try:
             Category.objects.get(category_name = name)
         except:
-            Category.objects.create(category_name=name,cat_image=image,category_decs=description,offfer=offer_instance).save()
+            Category.objects.create(category_name=name,cat_image=image,category_decs=description,offer=offer_instance).save()
             messages.success(request,f'Category "{name}" succesfully added')
         else:
             messages.error(request,f'Category "{name}" already exist')
