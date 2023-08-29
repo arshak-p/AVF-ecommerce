@@ -21,7 +21,7 @@ def payments(request, total=0, pretotal=0):
 
     # saving payment details
     if request.user.is_authenticated:
-        payment_method = PaymentMethod.objects.get(id=1)
+        payment_method = PaymentMethod.objects.get(method='cash on delivery')
         payment = Payment(
             user=request.user,
             payment_method=payment_method,
@@ -367,7 +367,9 @@ def success(request, total=0, pretotal=0):
         status='Paid'
     )
     payment.save()
+    print('---------------------payment---------------->>',payment)
     order = Order.objects.filter(user=request.user).order_by('-id').first()
+    print('---------------------order------------->>', order)
     order.payment = payment
     order.status = 'accepted'
     order.save()
