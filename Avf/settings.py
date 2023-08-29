@@ -144,7 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 import os
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Add the thumbnail processors configuration
 # THUMBNAIL_PROCESSORS = (
@@ -176,7 +176,6 @@ EMAIL_HOST_PASSWORD= 'efpnjnksbhrnnvuk'
 KEY = 'rzp_test_eYx1bJeJNl0JW1'
 KEY_SECRET = 'LH5SUmvkXODZ7zGsS9f9MPcm'
 
-# TIME_ZONE = 'Asia/kolkata'
 
 CORS_ALLOWED_ORIGINS = [
     'https://razorpay.com',  # Add more domains if needed
