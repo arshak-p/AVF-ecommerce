@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ku(u57*8w7cpzbr=(rr)r$2!watvjb#a(fqx@4in2fnmna(k50
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -101,10 +101,10 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'avf',
-        'USER': 'postgres',
+        'USER': 'arshak',
         'PASSWORD': 'arshak123',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
@@ -144,7 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 import os
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 
 # Add the thumbnail processors configuration
 # THUMBNAIL_PROCESSORS = (
